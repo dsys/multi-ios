@@ -8,13 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		481CFB8620C8AFB30064A3A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFB8520C8AFB30064A3A6 /* AppDelegate.swift */; };
-		481CFB8820C8AFB30064A3A6 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFB8720C8AFB30064A3A6 /* FirstViewController.swift */; };
-		481CFB8A20C8AFB30064A3A6 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFB8920C8AFB30064A3A6 /* SecondViewController.swift */; };
-		481CFB8D20C8AFB30064A3A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 481CFB8B20C8AFB30064A3A6 /* Main.storyboard */; };
 		481CFB8F20C8AFB50064A3A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 481CFB8E20C8AFB50064A3A6 /* Assets.xcassets */; };
 		481CFB9220C8AFB50064A3A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 481CFB9020C8AFB50064A3A6 /* LaunchScreen.storyboard */; };
-		481CFB9D20C8AFB50064A3A6 /* MultiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFB9C20C8AFB50064A3A6 /* MultiTests.swift */; };
 		481CFBA820C8AFB50064A3A6 /* MultiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBA720C8AFB50064A3A6 /* MultiUITests.swift */; };
+		D326293F20EACB3500BB695E /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D326293D20EACB1A00BB695E /* Apollo.framework */; };
+		D32E9DD420EAF0790047801A /* Multi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D32E9DD220EAF0790047801A /* Multi.xcdatamodeld */; };
+		D3472EE620F3D9B900625FA6 /* DAppTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3472EE520F3D9B900625FA6 /* DAppTableViewController.swift */; };
+		D3472EE820F3DCB300625FA6 /* DAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3472EE720F3DCB300625FA6 /* DAppManager.swift */; };
+		D3472EEA20F3DFF200625FA6 /* DefaultDApps.plist in Resources */ = {isa = PBXBuildFile; fileRef = D3472EE920F3DFF200625FA6 /* DefaultDApps.plist */; };
+		D36A15E220EAD83A00CE52F5 /* BitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D36A15E120EAD83A00CE52F5 /* BitcoinKit.framework */; };
+		D36A15E520EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36A15E420EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift */; };
+		D36A15E720EADA0200CE52F5 /* WalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36A15E620EADA0200CE52F5 /* WalletManager.swift */; };
+		D36A162A20EAE97E00CE52F5 /* WalletManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36A162920EAE97E00CE52F5 /* WalletManagerTests.swift */; };
+		D380864720EC442000936059 /* TransactionTableViewController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = D3BDE90720EC35E900C14698 /* TransactionTableViewController.graphql */; };
+		D380864920EC450900936059 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380864820EC450900936059 /* API.swift */; };
+		D380864B20EC706300936059 /* BlockchainAPIManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380864A20EC706300936059 /* BlockchainAPIManagerTest.swift */; };
+		D380864D20ED3ED300936059 /* DAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380864C20ED3ED300936059 /* DAppViewController.swift */; };
+		D380865320ED51C800936059 /* IconImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380865220ED51C800936059 /* IconImages.swift */; };
+		D380865720ED786900936059 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380865620ED786900936059 /* TransactionTableViewCell.swift */; };
+		D380865920ED7B4C00936059 /* MnemonicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380865820ED7B4C00936059 /* MnemonicCollectionViewCell.swift */; };
+		D380865B20ED7D4800936059 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380865A20ED7D4800936059 /* TransactionDetailViewController.swift */; };
+		D380865D20ED800A00936059 /* TransactionDisplayInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380865C20ED800A00936059 /* TransactionDisplayInformation.swift */; };
+		D3875F4E20EBF5C100B50B60 /* MnemonicCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3875F4D20EBF5C100B50B60 /* MnemonicCollectionView.swift */; };
+		D3875F5020EC022A00B50B60 /* TransactionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3875F4F20EC022A00B50B60 /* TransactionTableViewController.swift */; };
+		D39C6B8F20EC3E2D00407031 /* BlockchainAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39C6B8E20EC3E2D00407031 /* BlockchainAPIManager.swift */; };
+		D39C6B9120EC425600407031 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = D39C6B9020EC425600407031 /* schema.json */; };
+		D3BDE90620EC0DDB00C14698 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BDE90520EC0DDB00C14698 /* HomeViewController.swift */; };
+		D3E9EDBE20EEA02800783432 /* WalletGenerationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDBD20EEA02800783432 /* WalletGenerationManager.swift */; };
+		D3E9EDC220EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */; };
+		D3E9EDC620EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC520EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift */; };
+		D3E9EDC820F02A2B00783432 /* WalletGenerationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,18 +60,41 @@
 /* Begin PBXFileReference section */
 		481CFB8220C8AFB30064A3A6 /* Multi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Multi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481CFB8520C8AFB30064A3A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		481CFB8720C8AFB30064A3A6 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		481CFB8920C8AFB30064A3A6 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
-		481CFB8C20C8AFB30064A3A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		481CFB8E20C8AFB50064A3A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		481CFB9120C8AFB50064A3A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		481CFB9320C8AFB50064A3A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		481CFB9820C8AFB50064A3A6 /* MultiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		481CFB9C20C8AFB50064A3A6 /* MultiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTests.swift; sourceTree = "<group>"; };
 		481CFB9E20C8AFB50064A3A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		481CFBA320C8AFB50064A3A6 /* MultiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		481CFBA720C8AFB50064A3A6 /* MultiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiUITests.swift; sourceTree = "<group>"; };
 		481CFBA920C8AFB50064A3A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D326293D20EACB1A00BB695E /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
+		D32E9DD320EAF0790047801A /* Multi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Multi.xcdatamodel; sourceTree = "<group>"; };
+		D3472EE520F3D9B900625FA6 /* DAppTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAppTableViewController.swift; sourceTree = "<group>"; };
+		D3472EE720F3DCB300625FA6 /* DAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAppManager.swift; sourceTree = "<group>"; };
+		D3472EE920F3DFF200625FA6 /* DefaultDApps.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DefaultDApps.plist; sourceTree = "<group>"; };
+		D36A15E120EAD83A00CE52F5 /* BitcoinKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BitcoinKit.framework; path = Carthage/Build/iOS/BitcoinKit.framework; sourceTree = "<group>"; };
+		D36A15E420EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicWalletGenerationViewController.swift; sourceTree = "<group>"; };
+		D36A15E620EADA0200CE52F5 /* WalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManager.swift; sourceTree = "<group>"; };
+		D36A162920EAE97E00CE52F5 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
+		D380864820EC450900936059 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		D380864A20EC706300936059 /* BlockchainAPIManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainAPIManagerTest.swift; sourceTree = "<group>"; };
+		D380864C20ED3ED300936059 /* DAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAppViewController.swift; sourceTree = "<group>"; };
+		D380865220ED51C800936059 /* IconImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImages.swift; sourceTree = "<group>"; };
+		D380865620ED786900936059 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		D380865820ED7B4C00936059 /* MnemonicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicCollectionViewCell.swift; sourceTree = "<group>"; };
+		D380865A20ED7D4800936059 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
+		D380865C20ED800A00936059 /* TransactionDisplayInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDisplayInformation.swift; sourceTree = "<group>"; };
+		D3875F4D20EBF5C100B50B60 /* MnemonicCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicCollectionView.swift; sourceTree = "<group>"; };
+		D3875F4F20EC022A00B50B60 /* TransactionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewController.swift; sourceTree = "<group>"; };
+		D39C6B8E20EC3E2D00407031 /* BlockchainAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainAPIManager.swift; sourceTree = "<group>"; };
+		D39C6B9020EC425600407031 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
+		D3BDE90520EC0DDB00C14698 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D3BDE90720EC35E900C14698 /* TransactionTableViewController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TransactionTableViewController.graphql; sourceTree = "<group>"; };
+		D3E9EDBD20EEA02800783432 /* WalletGenerationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationManager.swift; sourceTree = "<group>"; };
+		D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationLinkDeviceViewController.swift; sourceTree = "<group>"; };
+		D3E9EDC520EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationTypeSelectionViewController.swift; sourceTree = "<group>"; };
+		D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D326293F20EACB3500BB695E /* Apollo.framework in Frameworks */,
+				D36A15E220EAD83A00CE52F5 /* BitcoinKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +131,7 @@
 				481CFB9B20C8AFB50064A3A6 /* MultiTests */,
 				481CFBA620C8AFB50064A3A6 /* MultiUITests */,
 				481CFB8320C8AFB30064A3A6 /* Products */,
+				D326293C20EACB1A00BB695E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,12 +149,13 @@
 			isa = PBXGroup;
 			children = (
 				481CFB8520C8AFB30064A3A6 /* AppDelegate.swift */,
-				481CFB8720C8AFB30064A3A6 /* FirstViewController.swift */,
-				481CFB8920C8AFB30064A3A6 /* SecondViewController.swift */,
-				481CFB8B20C8AFB30064A3A6 /* Main.storyboard */,
-				481CFB8E20C8AFB50064A3A6 /* Assets.xcassets */,
-				481CFB9020C8AFB50064A3A6 /* LaunchScreen.storyboard */,
-				481CFB9320C8AFB50064A3A6 /* Info.plist */,
+				D3BDE90520EC0DDB00C14698 /* HomeViewController.swift */,
+				D3472EF620F408D600625FA6 /* API */,
+				D3472EF820F4091800625FA6 /* DApps */,
+				D3472EF520F408B000625FA6 /* Transactions */,
+				D3472EEC20F406A700625FA6 /* Resources */,
+				D3472EF020F4076100625FA6 /* Utilities */,
+				D3472EF720F408F600625FA6 /* Wallet */,
 			);
 			path = Multi;
 			sourceTree = "<group>";
@@ -113,8 +163,9 @@
 		481CFB9B20C8AFB50064A3A6 /* MultiTests */ = {
 			isa = PBXGroup;
 			children = (
-				481CFB9C20C8AFB50064A3A6 /* MultiTests.swift */,
 				481CFB9E20C8AFB50064A3A6 /* Info.plist */,
+				D36A162920EAE97E00CE52F5 /* WalletManagerTests.swift */,
+				D380864A20EC706300936059 /* BlockchainAPIManagerTest.swift */,
 			);
 			path = MultiTests;
 			sourceTree = "<group>";
@@ -128,6 +179,82 @@
 			path = MultiUITests;
 			sourceTree = "<group>";
 		};
+		D326293C20EACB1A00BB695E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D36A15E120EAD83A00CE52F5 /* BitcoinKit.framework */,
+				D326293D20EACB1A00BB695E /* Apollo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D3472EEC20F406A700625FA6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				481CFB8E20C8AFB50064A3A6 /* Assets.xcassets */,
+				D3472EE920F3DFF200625FA6 /* DefaultDApps.plist */,
+				481CFB9320C8AFB50064A3A6 /* Info.plist */,
+				481CFB9020C8AFB50064A3A6 /* LaunchScreen.storyboard */,
+				D32E9DD220EAF0790047801A /* Multi.xcdatamodeld */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		D3472EF020F4076100625FA6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				D380865220ED51C800936059 /* IconImages.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		D3472EF520F408B000625FA6 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				D380865A20ED7D4800936059 /* TransactionDetailViewController.swift */,
+				D380865C20ED800A00936059 /* TransactionDisplayInformation.swift */,
+				D3875F4F20EC022A00B50B60 /* TransactionTableViewController.swift */,
+				D380865620ED786900936059 /* TransactionTableViewCell.swift */,
+			);
+			name = Transactions;
+			sourceTree = "<group>";
+		};
+		D3472EF620F408D600625FA6 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D380864820EC450900936059 /* API.swift */,
+				D39C6B8E20EC3E2D00407031 /* BlockchainAPIManager.swift */,
+				D39C6B9020EC425600407031 /* schema.json */,
+				D3BDE90720EC35E900C14698 /* TransactionTableViewController.graphql */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		D3472EF720F408F600625FA6 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				D3E9EDBD20EEA02800783432 /* WalletGenerationManager.swift */,
+				D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */,
+				D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */,
+				D3E9EDC520EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift */,
+				D36A15E620EADA0200CE52F5 /* WalletManager.swift */,
+				D3875F4D20EBF5C100B50B60 /* MnemonicCollectionView.swift */,
+				D380865820ED7B4C00936059 /* MnemonicCollectionViewCell.swift */,
+				D36A15E420EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift */,
+			);
+			name = Wallet;
+			sourceTree = "<group>";
+		};
+		D3472EF820F4091800625FA6 /* DApps */ = {
+			isa = PBXGroup;
+			children = (
+				D3472EE720F3DCB300625FA6 /* DAppManager.swift */,
+				D3472EE520F3D9B900625FA6 /* DAppTableViewController.swift */,
+				D380864C20ED3ED300936059 /* DAppViewController.swift */,
+			);
+			name = DApps;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +262,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 481CFBAC20C8AFB50064A3A6 /* Build configuration list for PBXNativeTarget "Multi" */;
 			buildPhases = (
+				D3BDE90920EC390D00C14698 /* Generate Apollo GraphQL API */,
 				481CFB7E20C8AFB30064A3A6 /* Sources */,
 				481CFB7F20C8AFB30064A3A6 /* Frameworks */,
 				481CFB8020C8AFB30064A3A6 /* Resources */,
+				D326294020EACB4800BB695E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -232,9 +361,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3472EEA20F3DFF200625FA6 /* DefaultDApps.plist in Resources */,
+				D380864720EC442000936059 /* TransactionTableViewController.graphql in Resources */,
+				D39C6B9120EC425600407031 /* schema.json in Resources */,
 				481CFB9220C8AFB50064A3A6 /* LaunchScreen.storyboard in Resources */,
 				481CFB8F20C8AFB50064A3A6 /* Assets.xcassets in Resources */,
-				481CFB8D20C8AFB30064A3A6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,14 +385,72 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D326294020EACB4800BB695E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Apollo.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BitcoinKit.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = " /usr/local/bin/carthage copy-frameworks\n";
+		};
+		D3BDE90920EC390D00C14698 /* Generate Apollo GraphQL API */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Apollo GraphQL API";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APOLLO_FRAMEWORK_PATH=\"$(eval find $FRAMEWORK_SEARCH_PATHS -name \"Apollo.framework\" -maxdepth 1)\"\n\nif [ -z \"$APOLLO_FRAMEWORK_PATH\" ]; then\necho \"error: Couldn't find Apollo.framework in FRAMEWORK_SEARCH_PATHS; make sure to add the framework to your project.\"\nexit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n$APOLLO_FRAMEWORK_PATH/check-and-run-apollo-codegen.sh generate $(find . -name '*.graphql') --schema schema.json --output API.swift\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		481CFB7E20C8AFB30064A3A6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				481CFB8A20C8AFB30064A3A6 /* SecondViewController.swift in Sources */,
+				D39C6B8F20EC3E2D00407031 /* BlockchainAPIManager.swift in Sources */,
+				D380865D20ED800A00936059 /* TransactionDisplayInformation.swift in Sources */,
 				481CFB8620C8AFB30064A3A6 /* AppDelegate.swift in Sources */,
-				481CFB8820C8AFB30064A3A6 /* FirstViewController.swift in Sources */,
+				D380865920ED7B4C00936059 /* MnemonicCollectionViewCell.swift in Sources */,
+				D32E9DD420EAF0790047801A /* Multi.xcdatamodeld in Sources */,
+				D380865720ED786900936059 /* TransactionTableViewCell.swift in Sources */,
+				D36A15E720EADA0200CE52F5 /* WalletManager.swift in Sources */,
+				D36A15E520EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift in Sources */,
+				D3472EE620F3D9B900625FA6 /* DAppTableViewController.swift in Sources */,
+				D3E9EDC620EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift in Sources */,
+				D3875F4E20EBF5C100B50B60 /* MnemonicCollectionView.swift in Sources */,
+				D380865320ED51C800936059 /* IconImages.swift in Sources */,
+				D3BDE90620EC0DDB00C14698 /* HomeViewController.swift in Sources */,
+				D3E9EDC220EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift in Sources */,
+				D380864920EC450900936059 /* API.swift in Sources */,
+				D3E9EDC820F02A2B00783432 /* WalletGenerationInfoViewController.swift in Sources */,
+				D3472EE820F3DCB300625FA6 /* DAppManager.swift in Sources */,
+				D3875F5020EC022A00B50B60 /* TransactionTableViewController.swift in Sources */,
+				D380865B20ED7D4800936059 /* TransactionDetailViewController.swift in Sources */,
+				D380864D20ED3ED300936059 /* DAppViewController.swift in Sources */,
+				D3E9EDBE20EEA02800783432 /* WalletGenerationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +458,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				481CFB9D20C8AFB50064A3A6 /* MultiTests.swift in Sources */,
+				D380864B20EC706300936059 /* BlockchainAPIManagerTest.swift in Sources */,
+				D36A162A20EAE97E00CE52F5 /* WalletManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +487,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		481CFB8B20C8AFB30064A3A6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				481CFB8C20C8AFB30064A3A6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		481CFB9020C8AFB50064A3A6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -434,7 +616,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = G8DHPYJA37;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Multi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -442,6 +630,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.distributedsystems.Multi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7fdd79a2-0de0-43bd-a41a-f43a1b10bcc5";
+				PROVISIONING_PROFILE_SPECIFIER = "Multi (dev)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -451,7 +641,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Multi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -459,6 +655,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.distributedsystems.Multi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -582,6 +779,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D32E9DD220EAF0790047801A /* Multi.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D32E9DD320EAF0790047801A /* Multi.xcdatamodel */,
+			);
+			currentVersion = D32E9DD320EAF0790047801A /* Multi.xcdatamodel */;
+			path = Multi.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 481CFB7A20C8AFB30064A3A6 /* Project object */;
 }
