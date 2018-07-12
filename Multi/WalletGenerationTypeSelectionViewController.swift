@@ -9,7 +9,6 @@
 import UIKit
 
 class WalletGenerationTypeSelectionViewController: UIViewController, WalletGenerationStep {
-
     let walletGenerationStepType: WalletGeneration.Step = .setUpNewOrLinkExisting
     weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
     let singleDeviceButton: UIButton = {

@@ -8,10 +8,9 @@
 
 import UIKit
 
-class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep, UITextFieldDelegate {
-    
+class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep {
     weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
-    let walletGenerationStepType: WalletGeneration.Step
+    var walletGenerationStepType: WalletGeneration.Step
     let walletGenerationInfo: WalletGeneration.Info
     let label: UILabel = {
         let label = UILabel()
@@ -20,8 +19,6 @@ class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep
     }()
     let textField: UITextField = {
         let textField = UITextField()
-        textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        textField.backgroundColor = UIColor.lightGray
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -31,7 +28,6 @@ class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep
         nextButton.setTitle("Next", for: .normal)
         nextButton.addTarget(self, action: #selector(next(button:)), for: .primaryActionTriggered)
         nextButton.sizeToFit()
-        nextButton.isEnabled = false
         return nextButton
     }()
     
@@ -41,7 +37,6 @@ class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep
         super.init(nibName: nil, bundle: nil)
         
         label.text = labelString
-        textField.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,6 +57,12 @@ class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep
         initializeConstraints()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        textField.becomeFirstResponder()
+    }
+    
     private func initializeConstraints() {
         let layoutGuide = self.view.safeAreaLayoutGuide
         
@@ -76,16 +77,7 @@ class WalletGenerationInfoViewController: UIViewController, WalletGenerationStep
         nextButton.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
     }
     
-    @objc private func textFieldDidChange(textField: UITextField) {
-        guard let count = textField.text?.count else {
-            assertionFailure()
-            return
-        }
-        
-        nextButton.isEnabled = count > 0
-    }
-    
-    @objc private func next(button: UIButton) {
+    @objc public func next(button: UIButton) {
         walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: [walletGenerationInfo : textField.text!])
     }
 }

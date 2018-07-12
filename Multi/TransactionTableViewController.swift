@@ -8,25 +8,20 @@
 
 import UIKit
 
-class TransactionTableViewController: UITableViewController, TransactionDetailViewControllerDelegate {
-    
+class TransactionTableViewController: UITableViewController {
     private let cellReuseIdentifier = "TransactionListTableViewCellReuseIdentifier"
-
     public var wallet: MTWallet? {
         didSet {
             fetchData()
         }
     }
-    private let blockchainAPIManager: BlockchainAPIManager
     private var transactions: [TransactionFeedQuery.Data.EthereumAddress.Transaction]? {
         didSet {
             tableView.reloadData()
         }
     }
     
-    init(blockchainAPIManager: BlockchainAPIManager) {
-        self.blockchainAPIManager = blockchainAPIManager
-
+    init() {
         super.init(style: .plain)
         self.title = "Recent Activity"
         self.tabBarItem = UITabBarItem(tabBarSystemItem: .recents, tag: 0)
@@ -41,14 +36,12 @@ class TransactionTableViewController: UITableViewController, TransactionDetailVi
         
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.tableFooterView = UIView()
+        self.wallet = WalletManager.sharedManager?.debugWallet
     }
     
     private func fetchData() {
-        guard let wallet = self.wallet else {
-            return
-        }
-
-        blockchainAPIManager.fetchTransactionsFor(forAddress: wallet.address!, onNework: wallet.network!) { (transactions) in
+        guard let wallet = self.wallet else { return }
+        APIManager.sharedManager.fetchTransactionsFor(forAddress: wallet.address!, onNework: wallet.network!) { (transactions) in
             DispatchQueue.main.async {
                 self.transactions = transactions?.reversed()
             }
@@ -85,15 +78,15 @@ class TransactionTableViewController: UITableViewController, TransactionDetailVi
         viewControler.delegate = self
         self.present(viewControler, animated: true, completion: nil)
     }
-    
-    // MARK - TransactionDetailViewControllerDelegate methods
-    
+}
+
+extension TransactionTableViewController: TransactionDetailViewControllerDelegate {
     func willDismiss(transactionDetailViewController: TransactionDetailViewController) {
         guard let indexPathForSelectedRow = tableView.indexPathForSelectedRow else {
             assertionFailure()
             return
         }
-
+        
         tableView.deselectRow(at: indexPathForSelectedRow, animated: true)
     }
 }

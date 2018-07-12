@@ -9,7 +9,6 @@
 import UIKit
 
 class MnemonicCollectionViewCell: UICollectionViewCell {
-    
     private var wordLabel: UILabel?
     public var word: String? {
         set(word) {

@@ -9,21 +9,14 @@
 import XCTest
 @testable import Multi
 
-class BlockchainAPIManagerTest: XCTestCase {
+class APIManagerTest: XCTestCase {
     
     let address = "0x770cE920c01F6Ea237451aA83C3D90cbcae48616"
     let network = ETHEREUM_NETWORK.ropsten
-    var blockchainAPIManager: BlockchainAPIManager?
-    
-    override func setUp() {
-        super.setUp()
-        
-        blockchainAPIManager = BlockchainAPIManager()
-    }
     
     func testFetchTransactions() {
         let expectation = XCTestExpectation(description: "Fetched transactions")
-        blockchainAPIManager?.fetchTransactionsFor(forAddress: address, onNework: network, completion: { (transactions) in
+        APIManager.sharedManager.fetchTransactionsFor(forAddress: address, onNework: network.rawValue, completion: { (transactions) in
             XCTAssertNotNil(transactions)
             XCTAssert((transactions?.count)! > 0)
             expectation.fulfill()

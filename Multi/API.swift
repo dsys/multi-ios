@@ -512,3 +512,82 @@ public final class TransactionFeedQuery: GraphQLQuery {
     }
   }
 }
+
+public final class StartPhoneNumberVerificationMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation StartPhoneNumberVerification($phoneNumber: String!) {\n  startPhoneNumberVerification(input: {phoneNumber: $phoneNumber}) {\n    __typename\n    ok\n  }\n}"
+
+  public var phoneNumber: String
+
+  public init(phoneNumber: String) {
+    self.phoneNumber = phoneNumber
+  }
+
+  public var variables: GraphQLMap? {
+    return ["phoneNumber": phoneNumber]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("startPhoneNumberVerification", arguments: ["input": ["phoneNumber": GraphQLVariable("phoneNumber")]], type: .object(StartPhoneNumberVerification.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(startPhoneNumberVerification: StartPhoneNumberVerification? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "startPhoneNumberVerification": startPhoneNumberVerification.flatMap { (value: StartPhoneNumberVerification) -> ResultMap in value.resultMap }])
+    }
+
+    public var startPhoneNumberVerification: StartPhoneNumberVerification? {
+      get {
+        return (resultMap["startPhoneNumberVerification"] as? ResultMap).flatMap { StartPhoneNumberVerification(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "startPhoneNumberVerification")
+      }
+    }
+
+    public struct StartPhoneNumberVerification: GraphQLSelectionSet {
+      public static let possibleTypes = ["Ack"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("ok", type: .scalar(Bool.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(ok: Bool? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Ack", "ok": ok])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var ok: Bool? {
+        get {
+          return resultMap["ok"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ok")
+        }
+      }
+    }
+  }
+}

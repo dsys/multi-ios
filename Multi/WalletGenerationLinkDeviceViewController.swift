@@ -9,19 +9,30 @@
 import AVFoundation
 import UIKit
 
-class WalletGenerationLinkDeviceViewController: UIViewController, WalletGenerationStep, AVCaptureMetadataOutputObjectsDelegate {
+class WalletGenerationLinkDeviceViewController: UIViewController, WalletGenerationStep {
     
     let walletGenerationStepType: WalletGeneration.Step = .linkOtherDevice
     weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
+    private let setupType: WalletGeneration.SetupType
     var cameraPreview: UIView?
     let qrLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    var dontHaveAnotherDeviceButton: UIButton?
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-
+    
+    init(setupType: WalletGeneration.SetupType) {
+        self.setupType = setupType
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,10 +46,19 @@ class WalletGenerationLinkDeviceViewController: UIViewController, WalletGenerati
         
         view?.addSubview(qrLabel)
         
-        initializeConstraints()
-        
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(gestureRecognizer:)))
         cameraPreview?.addGestureRecognizer(gestureRecognizer)
+        
+        if setupType == .setUpNewAccount {
+            dontHaveAnotherDeviceButton = UIButton(type: .system)
+            dontHaveAnotherDeviceButton?.translatesAutoresizingMaskIntoConstraints = false
+            dontHaveAnotherDeviceButton?.setTitle("Don't have another device handy?", for: .normal)
+            dontHaveAnotherDeviceButton?.addTarget(self, action: #selector(dontHaveAnotherDeviceButtonTapped(button:)), for: .primaryActionTriggered)
+            dontHaveAnotherDeviceButton?.sizeToFit()
+            view?.addSubview(dontHaveAnotherDeviceButton!)
+        }
+        
+        initializeConstraints()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,18 +76,24 @@ class WalletGenerationLinkDeviceViewController: UIViewController, WalletGenerati
         
         qrLabel.topAnchor.constraint(equalTo: cameraPreview!.bottomAnchor, constant: 50).isActive = true
         qrLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
+        
+        if setupType == .setUpNewAccount {
+            dontHaveAnotherDeviceButton?.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
+            dontHaveAnotherDeviceButton?.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -50).isActive = true
+        }
     }
     
-    @objc private  func tapped(gestureRecognizer: UITapGestureRecognizer) {
+    @objc private func tapped(gestureRecognizer: UITapGestureRecognizer) {
         walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: nil)
     }
     
+    @objc private func dontHaveAnotherDeviceButtonTapped(button: UIButton) {
+        walletGenerationStepDelegate?.stepCompleted(step: self, success: false, info: nil)
+    }
+    
     private func startStreamingVideo() {
-        guard let device = AVCaptureDevice.default(for: .video) else {
-            return
-        }
-        
-        guard let input = try? AVCaptureDeviceInput(device: device) else {
+        guard let device = AVCaptureDevice.default(for: .video),
+            let input = try? AVCaptureDeviceInput(device: device)  else {
             return
         }
         
@@ -87,7 +113,9 @@ class WalletGenerationLinkDeviceViewController: UIViewController, WalletGenerati
         
         captureSession?.startRunning()
     }
-    
+}
+
+extension WalletGenerationLinkDeviceViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         for metadataObject in metadataObjects {
             if metadataObject.type == .qr {

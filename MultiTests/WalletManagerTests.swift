@@ -35,10 +35,10 @@ class WalletManagerTests: XCTestCase {
     
     func testKeyGeneration() {
         let mnemonic = walletManager!.newMnemonic()
-        let wallet1 = walletManager!.generateWallet(name: "Wallet 1", mnemonic: mnemonic!)
+        let wallet1 = walletManager!.generateWallet(name: "Wallet 1", mnemonic: mnemonic)
         XCTAssertNotNil(wallet1)
         
-        let wallet2 = walletManager!.generateWallet(name: "Wallet 2", mnemonic: mnemonic!)
+        let wallet2 = walletManager!.generateWallet(name: "Wallet 2", mnemonic: mnemonic)
         XCTAssertNotNil(wallet2)
         
         XCTAssertEqual(wallet1!.publicKey, wallet2!.publicKey)
@@ -46,9 +46,9 @@ class WalletManagerTests: XCTestCase {
         XCTAssertEqual(wallet1!.address, wallet2!.address)
         
         let otherMnemonic = walletManager!.newMnemonic()
-        XCTAssertNotEqual(mnemonic, otherMnemonic!)
+        XCTAssertNotEqual(mnemonic, otherMnemonic)
 
-        let wallet3 = walletManager!.generateWallet(name: "Wallet 3", mnemonic: otherMnemonic!)
+        let wallet3 = walletManager!.generateWallet(name: "Wallet 3", mnemonic: otherMnemonic)
         XCTAssertNotNil(wallet3)
         
         XCTAssertNotEqual(wallet1!.publicKey, wallet3!.publicKey)
@@ -58,7 +58,7 @@ class WalletManagerTests: XCTestCase {
     
     func testSavingWallet() {
         let mnemonic = walletManager!.newMnemonic()
-        let wallet = walletManager!.generateWallet(name: "Wallet", mnemonic: mnemonic!)
+        let wallet = walletManager!.generateWallet(name: "Wallet", mnemonic: mnemonic)
         walletManager!.saveWallet(wallet: wallet!)
         
         XCTAssert(walletManager!.wallets.contains(wallet!))

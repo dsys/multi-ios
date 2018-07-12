@@ -18,16 +18,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let managedObjectContext = persistentContainer.viewContext
-        let walletManager = WalletManager(managedObjectContext: managedObjectContext)
-        let dAppManager = DAppManager(managedObjectContext: managedObjectContext)
-        window?.rootViewController = HomeViewController(walletManager: walletManager, dAppManager: dAppManager)
+        initializeManagedObjectContextSharedManagers()
+        
+        window?.rootViewController = HomeViewController()
 
         return true
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // Notification received while the app is running in foreground or background.
+    }
+    
+    private func initializeManagedObjectContextSharedManagers() {
+        let managedObjectContext = persistentContainer.viewContext
+        WalletManager.sharedManager = WalletManager(managedObjectContext: managedObjectContext)
+        DAppManager.sharedManager = DAppManager(managedObjectContext: managedObjectContext)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.saveContext()
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Send the device token to the server.
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Handle push notification registration failure.
     }
 
     lazy var persistentContainer: NSPersistentContainer = {

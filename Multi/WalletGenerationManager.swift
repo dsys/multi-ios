@@ -15,8 +15,7 @@ enum WalletGeneration {
         case enterPhoneNumber
         case enterPhoneNumberVerification
         case linkOtherDevice
-        case viewMnemonic
-        case enterMnemonic
+        case enterPassphrase
     }
     
     enum Info {
@@ -25,8 +24,7 @@ enum WalletGeneration {
         case phoneNumber
         case phoneNumberVerification
         case otherDeviceInfo
-        case mnemonic
-        case enteredMnemonicSuccessfully
+        case passphrase
     }
     
     enum SetupType {
@@ -36,14 +34,20 @@ enum WalletGeneration {
 }
 
 struct NewWalletInfo {
+    var mnemonic: [String]!
+    var type: WalletGeneration.SetupType?
     var name: String?
+    var passphrase: String?
     var address: String?
     var publicKey: String?
     var privateKey: String?
+    
+    init(mnemonic: [String]) {
+        self.mnemonic = mnemonic
+    }
 }
 
 protocol WalletGenerationStepDelegate: AnyObject {
-    func getMnemonic(walletCreator: WalletGenerationStep) -> [String]
     func stepCompleted(step: WalletGenerationStep, success: Bool, info: [WalletGeneration.Info:Any]?)
 }
 
@@ -59,21 +63,17 @@ extension WalletGenerationStep where Self: UIViewController {
     }
 }
 
-class WalletGenerationManager: NSObject, WalletGenerationStepDelegate {
-
-    let walletManager: WalletManager
+class WalletGenerationManager: NSObject {
     private var navigationController: UINavigationController?
     private var walletCreationCompletion: ((MTWallet?) -> Void)?
     private var newWalletInfo: NewWalletInfo?
-    
-    init(walletManager: WalletManager) {
-        self.walletManager = walletManager
-        super.init()
-    }
+    private var walletManager: WalletManager = {
+        return WalletManager.sharedManager!
+    }()
     
     func createWallet(presentingViewController: UIViewController, completion: ((MTWallet?) -> Void)?) {
         walletCreationCompletion = completion
-        newWalletInfo = NewWalletInfo()
+        newWalletInfo = NewWalletInfo(mnemonic: walletManager.newMnemonic())
         
         let firstStep = WalletGenerationTypeSelectionViewController()
         firstStep.walletGenerationStepDelegate = self
@@ -83,82 +83,98 @@ class WalletGenerationManager: NSObject, WalletGenerationStepDelegate {
         presentingViewController.present(navigationController!, animated: true, completion: nil)
     }
     
-    func getMnemonic(walletCreator: WalletGenerationStep) -> [String] {
-        return walletManager.newMnemonic()
-    }
-    
-    func stepCompleted(step: WalletGenerationStep, success: Bool, info: [WalletGeneration.Info:Any]?) {
-        if !success {
+    private func didSelectSetupNewOrLinkExisting(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        guard let setupType = info?[.type] as! WalletGeneration.SetupType? else {
             assertionFailure()
             return
         }
 
         var nextStep: WalletGenerationStep
-        switch step.walletGenerationStepType {
-        case .setUpNewOrLinkExisting:
-            guard let walletType = info?[.type] as! WalletGeneration.SetupType? else {
-                assertionFailure()
-                return
-            }
-            
-            switch walletType {
-            case .setUpNewAccount:
-                nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterName, walletGenerationInfo: .name, labelString: "Username:")
-                break
-            case .linkExistingAccount:
-                nextStep = WalletGenerationLinkDeviceViewController()
-                break
-            }
+        newWalletInfo?.type = setupType
+        switch setupType {
+        case .setUpNewAccount:
+            nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterName, walletGenerationInfo: .name, labelString: "Username:")
             break
-        case .enterName:
+        case .linkExistingAccount:
+            nextStep = WalletGenerationLinkDeviceViewController(setupType: setupType)
+            break
+        }
+
+        nextStep.walletGenerationStepDelegate = self
+        navigationController?.pushViewController(nextStep.viewController, animated: true)
+    }
+    
+    private func didEnterName(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        guard let name = info?[.name] as! String? else {
+            assertionFailure()
+            return
+        }
+        
+        newWalletInfo?.name = name
+        let nextStep = WalletGenerationPhoneNumberViewController()
+        nextStep.walletGenerationStepDelegate = self
+        navigationController?.pushViewController(nextStep.viewController, animated: true)
+    }
+    
+    private func didEnterPhoneNumber(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        guard let phoneNumber = info?[.phoneNumber] as! String? else {
+            assertionFailure()
+            return
+        }
+        
+        verifyPhoneNumber(phoneNumber: phoneNumber)
+        let nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPhoneNumberVerification, walletGenerationInfo: .phoneNumberVerification, labelString: "Verify Phone Number:")
+        nextStep.walletGenerationStepDelegate = self
+        navigationController?.pushViewController(nextStep.viewController, animated: true)
+    }
+    
+    private func didEnterPhoneNumberVerification(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        guard let phoneNumberVerification = info?[.phoneNumberVerification] as! String? else {
+            assertionFailure()
+            return
+        }
+        
+        verifyPhoneNumberVerification(phoneNumberVerification: phoneNumberVerification)
+        let nextStep = WalletGenerationLinkDeviceViewController(setupType: newWalletInfo!.type!)
+        nextStep.walletGenerationStepDelegate = self
+        navigationController?.pushViewController(nextStep.viewController, animated: true)
+    }
+    
+    private func didAttemptToLinkOtherDevice(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        if !success {
+            let nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPassphrase, walletGenerationInfo: .passphrase, labelString: "Enter a passphrase:")
+            nextStep.walletGenerationStepDelegate = self
+            navigationController?.pushViewController(nextStep.viewController, animated: true)
+            return
+        }
+        
+        if newWalletInfo?.type == .linkExistingAccount {
+            assert(newWalletInfo?.name == nil)
             guard let name = info?[.name] as! String? else {
                 assertionFailure()
                 return
             }
             
             newWalletInfo?.name = name
-            nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPhoneNumber, walletGenerationInfo: .phoneNumber, labelString: "Enter Phone Number:")
-            break
-        case .enterPhoneNumber:
-            guard let phoneNumber = info?[.phoneNumber] as! String? else {
-                assertionFailure()
-                return
-            }
-            
-            verifyPhoneNumber(phoneNumber: phoneNumber)
-            nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPhoneNumberVerification, walletGenerationInfo: .phoneNumberVerification, labelString: "Verify Phone Number:")
-            break
-        case .enterPhoneNumberVerification:
-            guard let phoneNumberVerification = info?[.phoneNumberVerification] as! String? else {
-                assertionFailure()
-                return
-            }
-            
-            verifyPhoneNumberVerification(phoneNumberVerification: phoneNumberVerification)
-            nextStep = WalletGenerationLinkDeviceViewController()
-            break
-        case .linkOtherDevice:
-            guard let name = newWalletInfo?.name else {
-                assertionFailure()
-                return
-            }
-            
-            generateAndSaveWallet(name: name, mnemonic: walletManager.newMnemonic())
-            navigationController?.dismiss(animated: true, completion: nil)
-            return
-        default:
+        }
+        
+        generateAndSaveWallet(newWallet: newWalletInfo!)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private func didEnterPassphrase(success: Bool, info: [WalletGeneration.Info:Any]?) {
+        guard let passphrase = info?[.passphrase] as! String? else {
             assertionFailure()
             return
         }
         
-        nextStep.walletGenerationStepDelegate = self
-        navigationController?.pushViewController(nextStep.viewController, animated: true)
+        newWalletInfo?.passphrase = passphrase
+        generateAndSaveWallet(newWallet: newWalletInfo!)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    private func generateAndSaveWallet(name: String, mnemonic: [String]) {
-        guard let wallet = walletManager.generateWallet(name: name, mnemonic: mnemonic) else {
-            return
-        }
+    private func generateAndSaveWallet(newWallet: NewWalletInfo) {
+        guard let wallet = walletManager.generateWallet(name: newWallet.name!, mnemonic: newWallet.mnemonic) else { return }
         
         walletManager.saveWallet(wallet: wallet)
         if let completion = walletCreationCompletion {
@@ -174,5 +190,30 @@ class WalletGenerationManager: NSObject, WalletGenerationStepDelegate {
     
     private func verifyPhoneNumberVerification(phoneNumberVerification: String) {
         // Need to implement
+    }
+}
+
+extension WalletGenerationManager: WalletGenerationStepDelegate {
+    func stepCompleted(step: WalletGenerationStep, success: Bool, info: [WalletGeneration.Info:Any]?) {
+        switch step.walletGenerationStepType {
+        case .setUpNewOrLinkExisting:
+            didSelectSetupNewOrLinkExisting(success: success, info: info)
+            break
+        case .enterName:
+            didEnterName(success: success, info: info)
+            break
+        case .enterPhoneNumber:
+            didEnterPhoneNumber(success: success, info: info)
+            break
+        case .enterPhoneNumberVerification:
+            didEnterPhoneNumberVerification(success: success, info: info)
+            break
+        case .linkOtherDevice:
+            didAttemptToLinkOtherDevice(success: success, info: info)
+            break
+        case .enterPassphrase:
+            didEnterPassphrase(success: success, info: info)
+            break
+        }
     }
 }

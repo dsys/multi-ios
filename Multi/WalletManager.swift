@@ -11,7 +11,16 @@ import CoreData
 import Foundation
 
 class WalletManager: NSObject {
-
+    private static var sharedWalletManagerInstance: WalletManager?
+    public static var sharedManager: WalletManager? {
+        get {
+            return sharedWalletManagerInstance
+        }
+        set (newSharedWalletManager) {
+            assert(sharedWalletManagerInstance == nil)
+            sharedWalletManagerInstance = newSharedWalletManager
+        }
+    }
     private let managedObjectContext: NSManagedObjectContext
     public private(set) lazy var wallets: [MTWallet] = {
         return fetchWallets()

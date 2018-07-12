@@ -44,9 +44,7 @@ class TransactionDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let view = self.view else {
-            return
-        }
+        guard let view = self.view else { return }
 
         let layer = view.layer
         layer.cornerRadius = TransactionDetailViewController.viewCornerRadius
@@ -79,9 +77,7 @@ class TransactionDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let transitionCoordinator = self.transitionCoordinator else {
-            return
-        }
+        guard let transitionCoordinator = self.transitionCoordinator else { return }
         
         transitionCoordinator.animate(alongsideTransition: { (context) in
             guard let fromView = context.viewController(forKey: .from)?.view else {
@@ -97,9 +93,7 @@ class TransactionDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let transitionCoordinator = self.transitionCoordinator else {
-            return
-        }
+        guard let transitionCoordinator = self.transitionCoordinator else { return }
         
         self.transitionCoordinator?.animate(alongsideTransition: { (context) in
             UIView.animate(withDuration: transitionCoordinator.transitionDuration, delay: 0, options: .curveEaseInOut, animations: {
