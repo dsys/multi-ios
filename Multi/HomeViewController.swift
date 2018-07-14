@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
         return WalletGenerationManager()
     }()
     private var dAppCollectionViewController: DAppCollectionViewController?
-    private var shouldShowWalletCreationView: Bool = false
+    private var shouldShowWalletCreationView: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()

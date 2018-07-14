@@ -79,7 +79,11 @@ class WalletGenerationManager: NSObject {
         firstStep.walletGenerationStepDelegate = self
 
         navigationController = UINavigationController(rootViewController: firstStep.viewController)
-        navigationController!.isNavigationBarHidden = true
+        let navigationBar = navigationController?.navigationBar
+        navigationBar?.isTranslucent = true
+        navigationBar?.setBackgroundImage(UIImage(), for: .default)
+        navigationBar?.shadowImage = UIImage()
+        navigationBar?.tintColor = UIColor.white
         presentingViewController.present(navigationController!, animated: true, completion: nil)
     }
     
@@ -93,7 +97,7 @@ class WalletGenerationManager: NSObject {
         newWalletInfo?.type = setupType
         switch setupType {
         case .setUpNewAccount:
-            nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterName, walletGenerationInfo: .name, labelString: "Username:")
+            nextStep = WalletGenerationUsernameViewController()
             break
         case .linkExistingAccount:
             nextStep = WalletGenerationLinkDeviceViewController(setupType: setupType)
@@ -123,7 +127,7 @@ class WalletGenerationManager: NSObject {
         }
         
         verifyPhoneNumber(phoneNumber: phoneNumber)
-        let nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPhoneNumberVerification, walletGenerationInfo: .phoneNumberVerification, labelString: "Verify Phone Number:")
+        let nextStep = WalletGenerationPhoneVerificationViewController()
         nextStep.walletGenerationStepDelegate = self
         navigationController?.pushViewController(nextStep.viewController, animated: true)
     }

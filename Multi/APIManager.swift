@@ -29,14 +29,19 @@ class APIManager: NSObject {
         })
     }
     
-    public func sendPhoneNumberForVerification(phoneNumber: String, completion: @escaping (Bool) -> ()) {
+    public func checkIfUsernameIsValid(name: String, completion: @escaping (Bool, String?) -> Void) {
+        // Implement when API is ready
+        completion(true, nil)
+    }
+    
+    public func startPhoneNumberVerification(phoneNumber: String, completion: @escaping (Bool, String?) -> ()) {
         apollo.perform(mutation: StartPhoneNumberVerificationMutation(phoneNumber: phoneNumber), queue: queue) { (result, error) in
             if error != nil {
-                completion(false)
+                completion(false, nil)
                 return
             }
             
-            completion(result?.data?.startPhoneNumberVerification?.ok ?? false)
+            completion(result?.data?.startPhoneNumberVerification?.ok ?? false, nil)
         }
     }
 }
