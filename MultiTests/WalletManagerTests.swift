@@ -11,7 +11,6 @@ import XCTest
 @testable import Multi
 
 class WalletManagerTests: XCTestCase {
-    
     var walletManager: WalletManager?
     
     override func setUp() {

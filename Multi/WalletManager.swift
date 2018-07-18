@@ -6,7 +6,6 @@
 //  Copyright © 2018 Distributed Systems, Inc. All rights reserved.
 //
 
-import BitcoinKit
 import CoreData
 import Foundation
 
@@ -41,30 +40,18 @@ class WalletManager: NSObject {
         super.init()
     }
     
-    public func newMnemonic() -> [String] {
-        guard let mnemonic = try? Mnemonic.generate() else {
-            return [String]()
-        }
-        
-        return mnemonic
-    }
-    
-    public func generateWallet(name: String, mnemonic: [String]) -> MTWallet? {
-        let seed = Mnemonic.seed(mnemonic: mnemonic)
-        let hdWallet = HDWallet(seed: seed, network: .mainnet)
-        
+    public func saveWallet(username: String, publicKey: String, privateKey: String, contractAddress: String, network: ETHEREUM_NETWORK) -> MTWallet {
         let wallet = MTWallet(context: managedObjectContext)
-        wallet.name = name
-        wallet.address = hdWallet.address
-        wallet.publicKey = hdWallet.publicKey.extended()
-        wallet.privateKey = hdWallet.privateKey.extended()
-        wallet.network = ETHEREUM_NETWORK.mainnet.rawValue
-        return wallet
-    }
-    
-    public func saveWallet(wallet: MTWallet) {
+        wallet.name = username
+        wallet.address = contractAddress
+        wallet.publicKey = publicKey
+        wallet.privateKey = privateKey
+        wallet.network = network.rawValue
+
         wallets.append(wallet)
         managedObjectContext.insert(wallet)
+        
+        return wallet
     }
     
     private func fetchWallets() -> [MTWallet] {

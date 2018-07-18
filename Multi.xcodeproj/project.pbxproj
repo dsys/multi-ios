@@ -16,6 +16,13 @@
 		D302D23420F9401A00BC0DAF /* WalletGenerationUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D23320F9401A00BC0DAF /* WalletGenerationUsernameViewController.swift */; };
 		D302D23620F96E0B00BC0DAF /* WalletGenerationPhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D23520F96E0B00BC0DAF /* WalletGenerationPhoneVerificationViewController.swift */; };
 		D302D23E20F9818F00BC0DAF /* StringUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D23D20F9818F00BC0DAF /* StringUtilities.swift */; };
+		D302D24020FD33DF00BC0DAF /* WalletGenerationPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D23F20FD33DF00BC0DAF /* WalletGenerationPassphraseViewController.swift */; };
+		D302D24220FD4D1900BC0DAF /* WalletGenerationCreatingIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D24120FD4D1900BC0DAF /* WalletGenerationCreatingIdentityViewController.swift */; };
+		D302D24420FD52BF00BC0DAF /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D24320FD52BF00BC0DAF /* QRCodeGenerator.swift */; };
+		D302D24620FD55AB00BC0DAF /* QRCodeGeneratorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D302D24520FD55AB00BC0DAF /* QRCodeGeneratorTest.swift */; };
+		D302FDC620FE554C00D2FE3E /* WalletGenerationPhoneVerificationViewController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = D302FDC520FE554C00D2FE3E /* WalletGenerationPhoneVerificationViewController.graphql */; };
+		D302FDC820FE5D9200D2FE3E /* WalletGenerationUsernameViewController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = D302FDC720FE5D9200D2FE3E /* WalletGenerationUsernameViewController.graphql */; };
+		D302FDCA20FE7C4000D2FE3E /* WalletGenerationManager.graphql in Resources */ = {isa = PBXBuildFile; fileRef = D302FDC920FE7C4000D2FE3E /* WalletGenerationManager.graphql */; };
 		D326293F20EACB3500BB695E /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D326293D20EACB1A00BB695E /* Apollo.framework */; };
 		D32E9DD420EAF0790047801A /* Multi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D32E9DD220EAF0790047801A /* Multi.xcdatamodeld */; };
 		D338B39820F572C400C17C37 /* FetchIcons.js in Resources */ = {isa = PBXBuildFile; fileRef = D338B39720F572C400C17C37 /* FetchIcons.js */; };
@@ -47,7 +54,6 @@
 		D3E9EDBE20EEA02800783432 /* WalletGenerationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDBD20EEA02800783432 /* WalletGenerationManager.swift */; };
 		D3E9EDC220EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */; };
 		D3E9EDC620EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC520EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift */; };
-		D3E9EDC820F02A2B00783432 /* WalletGenerationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +89,13 @@
 		D302D23320F9401A00BC0DAF /* WalletGenerationUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationUsernameViewController.swift; sourceTree = "<group>"; };
 		D302D23520F96E0B00BC0DAF /* WalletGenerationPhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationPhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		D302D23D20F9818F00BC0DAF /* StringUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtilities.swift; sourceTree = "<group>"; };
+		D302D23F20FD33DF00BC0DAF /* WalletGenerationPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationPassphraseViewController.swift; sourceTree = "<group>"; };
+		D302D24120FD4D1900BC0DAF /* WalletGenerationCreatingIdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationCreatingIdentityViewController.swift; sourceTree = "<group>"; };
+		D302D24320FD52BF00BC0DAF /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		D302D24520FD55AB00BC0DAF /* QRCodeGeneratorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGeneratorTest.swift; sourceTree = "<group>"; };
+		D302FDC520FE554C00D2FE3E /* WalletGenerationPhoneVerificationViewController.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WalletGenerationPhoneVerificationViewController.graphql; sourceTree = "<group>"; };
+		D302FDC720FE5D9200D2FE3E /* WalletGenerationUsernameViewController.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WalletGenerationUsernameViewController.graphql; sourceTree = "<group>"; };
+		D302FDC920FE7C4000D2FE3E /* WalletGenerationManager.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WalletGenerationManager.graphql; sourceTree = "<group>"; };
 		D326293D20EACB1A00BB695E /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
 		D32E9DD320EAF0790047801A /* Multi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Multi.xcdatamodel; sourceTree = "<group>"; };
 		D338B39720F572C400C17C37 /* FetchIcons.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FetchIcons.js; sourceTree = "<group>"; };
@@ -115,7 +128,6 @@
 		D3E9EDBD20EEA02800783432 /* WalletGenerationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationManager.swift; sourceTree = "<group>"; };
 		D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationLinkDeviceViewController.swift; sourceTree = "<group>"; };
 		D3E9EDC520EFF26E00783432 /* WalletGenerationTypeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationTypeSelectionViewController.swift; sourceTree = "<group>"; };
-		D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletGenerationInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +185,10 @@
 				481CFB8520C8AFB30064A3A6 /* AppDelegate.swift */,
 				D3BDE90520EC0DDB00C14698 /* HomeViewController.swift */,
 				D3BDE90720EC35E900C14698 /* TransactionTableViewController.graphql */,
+				D302FDC920FE7C4000D2FE3E /* WalletGenerationManager.graphql */,
+				D302FDC720FE5D9200D2FE3E /* WalletGenerationUsernameViewController.graphql */,
 				D3C7E2E220F6B16D00438FF7 /* WalletGenerationPhoneNumberViewController.graphql */,
+				D302FDC520FE554C00D2FE3E /* WalletGenerationPhoneVerificationViewController.graphql */,
 				D3472EF620F408D600625FA6 /* API */,
 				D3472EF820F4091800625FA6 /* DApps */,
 				D3472EF520F408B000625FA6 /* Transactions */,
@@ -190,6 +205,7 @@
 				481CFB9E20C8AFB50064A3A6 /* Info.plist */,
 				D36A162920EAE97E00CE52F5 /* WalletManagerTests.swift */,
 				D380864A20EC706300936059 /* APIManagerTest.swift */,
+				D302D24520FD55AB00BC0DAF /* QRCodeGeneratorTest.swift */,
 			);
 			path = MultiTests;
 			sourceTree = "<group>";
@@ -264,13 +280,15 @@
 				D302D23320F9401A00BC0DAF /* WalletGenerationUsernameViewController.swift */,
 				D3C7E2E420F6B38800438FF7 /* WalletGenerationPhoneNumberViewController.swift */,
 				D302D23520F96E0B00BC0DAF /* WalletGenerationPhoneVerificationViewController.swift */,
-				D3E9EDC720F02A2B00783432 /* WalletGenerationInfoViewController.swift */,
 				D3E9EDC120EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift */,
+				D302D23F20FD33DF00BC0DAF /* WalletGenerationPassphraseViewController.swift */,
+				D302D24120FD4D1900BC0DAF /* WalletGenerationCreatingIdentityViewController.swift */,
 				D36A15E620EADA0200CE52F5 /* WalletManager.swift */,
 				D3875F4D20EBF5C100B50B60 /* MnemonicCollectionView.swift */,
 				D380865820ED7B4C00936059 /* MnemonicCollectionViewCell.swift */,
 				D36A15E420EAD8A400CE52F5 /* MnemonicWalletGenerationViewController.swift */,
 				D302D22F20F9347A00BC0DAF /* GradientLayer.swift */,
+				D302D24320FD52BF00BC0DAF /* QRCodeGenerator.swift */,
 			);
 			name = Wallet;
 			sourceTree = "<group>";
@@ -405,7 +423,10 @@
 				D3C7E2E320F6B16D00438FF7 /* WalletGenerationPhoneNumberViewController.graphql in Resources */,
 				D380864720EC442000936059 /* TransactionTableViewController.graphql in Resources */,
 				D39C6B9120EC425600407031 /* schema.json in Resources */,
+				D302FDCA20FE7C4000D2FE3E /* WalletGenerationManager.graphql in Resources */,
+				D302FDC820FE5D9200D2FE3E /* WalletGenerationUsernameViewController.graphql in Resources */,
 				D338B39820F572C400C17C37 /* FetchIcons.js in Resources */,
+				D302FDC620FE554C00D2FE3E /* WalletGenerationPhoneVerificationViewController.graphql in Resources */,
 				481CFB9220C8AFB50064A3A6 /* LaunchScreen.storyboard in Resources */,
 				481CFB8F20C8AFB50064A3A6 /* Assets.xcassets in Resources */,
 			);
@@ -475,6 +496,7 @@
 				D3C7E2E020F6898700438FF7 /* DAppCollectionViewCell.swift in Sources */,
 				D39C6B8F20EC3E2D00407031 /* APIManager.swift in Sources */,
 				D380865D20ED800A00936059 /* TransactionDisplayInformation.swift in Sources */,
+				D302D24020FD33DF00BC0DAF /* WalletGenerationPassphraseViewController.swift in Sources */,
 				481CFB8620C8AFB30064A3A6 /* AppDelegate.swift in Sources */,
 				D380865920ED7B4C00936059 /* MnemonicCollectionViewCell.swift in Sources */,
 				D32E9DD420EAF0790047801A /* Multi.xcdatamodeld in Sources */,
@@ -491,13 +513,14 @@
 				D3E9EDC220EEDB6E00783432 /* WalletGenerationLinkDeviceViewController.swift in Sources */,
 				D380864920EC450900936059 /* API.swift in Sources */,
 				D302D23220F9379100BC0DAF /* WalletGenerationStepViewController.swift in Sources */,
-				D3E9EDC820F02A2B00783432 /* WalletGenerationInfoViewController.swift in Sources */,
 				D393C87B20F466FC0096CD80 /* DAppCollectionViewController.swift in Sources */,
 				D3C7E2E520F6B38800438FF7 /* WalletGenerationPhoneNumberViewController.swift in Sources */,
 				D3472EE820F3DCB300625FA6 /* DAppManager.swift in Sources */,
 				D3875F5020EC022A00B50B60 /* TransactionTableViewController.swift in Sources */,
+				D302D24420FD52BF00BC0DAF /* QRCodeGenerator.swift in Sources */,
 				D380865B20ED7D4800936059 /* TransactionDetailViewController.swift in Sources */,
 				D302D23020F9347A00BC0DAF /* GradientLayer.swift in Sources */,
+				D302D24220FD4D1900BC0DAF /* WalletGenerationCreatingIdentityViewController.swift in Sources */,
 				D338B39A20F57C2B00C17C37 /* DAppIconFetcher.swift in Sources */,
 				D380864D20ED3ED300936059 /* DAppWebViewController.swift in Sources */,
 				D3E9EDBE20EEA02800783432 /* WalletGenerationManager.swift in Sources */,
@@ -509,6 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D380864B20EC706300936059 /* APIManagerTest.swift in Sources */,
+				D302D24620FD55AB00BC0DAF /* QRCodeGeneratorTest.swift in Sources */,
 				D36A162A20EAE97E00CE52F5 /* WalletManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -719,6 +743,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8DHPYJA37;
 				INFOPLIST_FILE = MultiTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -739,6 +764,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8DHPYJA37;
 				INFOPLIST_FILE = MultiTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -758,6 +784,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8DHPYJA37;
 				INFOPLIST_FILE = MultiUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -777,6 +804,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8DHPYJA37;
 				INFOPLIST_FILE = MultiUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

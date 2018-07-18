@@ -47,7 +47,8 @@ class HomeViewController: UIViewController {
         notificationCenter.getNotificationSettings { (settings) in
             if settings.authorizationStatus == .authorized { return }
             notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                if granted {
+                if !granted { return }
+                DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             }

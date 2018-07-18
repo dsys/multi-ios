@@ -3,5 +3,6 @@ mutation StartPhoneNumberVerification($phoneNumber: String!) {
         phoneNumber: $phoneNumber
     }) {
         ok
+        message
     }
 }

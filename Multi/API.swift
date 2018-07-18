@@ -513,9 +513,192 @@ public final class TransactionFeedQuery: GraphQLQuery {
   }
 }
 
+public final class CreateIdentityContractMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation CreateIdentityContract($username: String!, $phoneNumberToken: String!, $managerAddresses: [EthereumAddressString!]!, $network: ETHEREUM_NETWORK, $passphraseRecoveryHash: String, $socialRecoveryAddresses: [EthereumAddressString!]) {\n  createIdentityContract(input: {username: $username, phoneNumberToken: $phoneNumberToken, managerAddresses: $managerAddresses, network: $network, passphraseRecoveryHash: $passphraseRecoveryHash, socialRecoveryAddresses: $socialRecoveryAddresses}) {\n    __typename\n    ok\n    message\n    identityContract {\n      __typename\n      address {\n        __typename\n        display\n      }\n    }\n  }\n}"
+
+  public var username: String
+  public var phoneNumberToken: String
+  public var managerAddresses: [String]
+  public var network: ETHEREUM_NETWORK?
+  public var passphraseRecoveryHash: String?
+  public var socialRecoveryAddresses: [String]?
+
+  public init(username: String, phoneNumberToken: String, managerAddresses: [String], network: ETHEREUM_NETWORK? = nil, passphraseRecoveryHash: String? = nil, socialRecoveryAddresses: [String]?) {
+    self.username = username
+    self.phoneNumberToken = phoneNumberToken
+    self.managerAddresses = managerAddresses
+    self.network = network
+    self.passphraseRecoveryHash = passphraseRecoveryHash
+    self.socialRecoveryAddresses = socialRecoveryAddresses
+  }
+
+  public var variables: GraphQLMap? {
+    return ["username": username, "phoneNumberToken": phoneNumberToken, "managerAddresses": managerAddresses, "network": network, "passphraseRecoveryHash": passphraseRecoveryHash, "socialRecoveryAddresses": socialRecoveryAddresses]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("createIdentityContract", arguments: ["input": ["username": GraphQLVariable("username"), "phoneNumberToken": GraphQLVariable("phoneNumberToken"), "managerAddresses": GraphQLVariable("managerAddresses"), "network": GraphQLVariable("network"), "passphraseRecoveryHash": GraphQLVariable("passphraseRecoveryHash"), "socialRecoveryAddresses": GraphQLVariable("socialRecoveryAddresses")]], type: .object(CreateIdentityContract.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(createIdentityContract: CreateIdentityContract? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "createIdentityContract": createIdentityContract.flatMap { (value: CreateIdentityContract) -> ResultMap in value.resultMap }])
+    }
+
+    public var createIdentityContract: CreateIdentityContract? {
+      get {
+        return (resultMap["createIdentityContract"] as? ResultMap).flatMap { CreateIdentityContract(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "createIdentityContract")
+      }
+    }
+
+    public struct CreateIdentityContract: GraphQLSelectionSet {
+      public static let possibleTypes = ["CreateIdentityContractPayload"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("ok", type: .scalar(Bool.self)),
+        GraphQLField("message", type: .scalar(String.self)),
+        GraphQLField("identityContract", type: .object(IdentityContract.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(ok: Bool? = nil, message: String? = nil, identityContract: IdentityContract? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CreateIdentityContractPayload", "ok": ok, "message": message, "identityContract": identityContract.flatMap { (value: IdentityContract) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var ok: Bool? {
+        get {
+          return resultMap["ok"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ok")
+        }
+      }
+
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+
+      public var identityContract: IdentityContract? {
+        get {
+          return (resultMap["identityContract"] as? ResultMap).flatMap { IdentityContract(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "identityContract")
+        }
+      }
+
+      public struct IdentityContract: GraphQLSelectionSet {
+        public static let possibleTypes = ["EthereumIdentityContract"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("address", type: .nonNull(.object(Address.selections))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(address: Address) {
+          self.init(unsafeResultMap: ["__typename": "EthereumIdentityContract", "address": address.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var address: Address {
+          get {
+            return Address(unsafeResultMap: resultMap["address"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "address")
+          }
+        }
+
+        public struct Address: GraphQLSelectionSet {
+          public static let possibleTypes = ["EthereumAddress"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("display", type: .nonNull(.scalar(String.self))),
+          ]
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(display: String) {
+            self.init(unsafeResultMap: ["__typename": "EthereumAddress", "display": display])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var display: String {
+            get {
+              return resultMap["display"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "display")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class StartPhoneNumberVerificationMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation StartPhoneNumberVerification($phoneNumber: String!) {\n  startPhoneNumberVerification(input: {phoneNumber: $phoneNumber}) {\n    __typename\n    ok\n  }\n}"
+    "mutation StartPhoneNumberVerification($phoneNumber: String!) {\n  startPhoneNumberVerification(input: {phoneNumber: $phoneNumber}) {\n    __typename\n    ok\n    message\n  }\n}"
 
   public var phoneNumber: String
 
@@ -554,11 +737,12 @@ public final class StartPhoneNumberVerificationMutation: GraphQLMutation {
     }
 
     public struct StartPhoneNumberVerification: GraphQLSelectionSet {
-      public static let possibleTypes = ["Ack"]
+      public static let possibleTypes = ["StartPhoneNumberVerificationPayload"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("ok", type: .scalar(Bool.self)),
+        GraphQLField("message", type: .scalar(String.self)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -567,8 +751,8 @@ public final class StartPhoneNumberVerificationMutation: GraphQLMutation {
         self.resultMap = unsafeResultMap
       }
 
-      public init(ok: Bool? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Ack", "ok": ok])
+      public init(ok: Bool? = nil, message: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "StartPhoneNumberVerificationPayload", "ok": ok, "message": message])
       }
 
       public var __typename: String {
@@ -586,6 +770,262 @@ public final class StartPhoneNumberVerificationMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "ok")
+        }
+      }
+
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+    }
+  }
+}
+
+public final class CheckPhoneNumberVerificationMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation CheckPhoneNumberVerification($phoneNumber: String!, $verificationCode: String!) {\n  checkPhoneNumberVerification(input: {phoneNumber: $phoneNumber, verificationCode: $verificationCode}) {\n    __typename\n    ok\n    message\n    phoneNumber {\n      __typename\n      hashedPhoneNumber\n    }\n    phoneNumberToken\n    phoneNumberTokenExpires\n  }\n}"
+
+  public var phoneNumber: String
+  public var verificationCode: String
+
+  public init(phoneNumber: String, verificationCode: String) {
+    self.phoneNumber = phoneNumber
+    self.verificationCode = verificationCode
+  }
+
+  public var variables: GraphQLMap? {
+    return ["phoneNumber": phoneNumber, "verificationCode": verificationCode]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("checkPhoneNumberVerification", arguments: ["input": ["phoneNumber": GraphQLVariable("phoneNumber"), "verificationCode": GraphQLVariable("verificationCode")]], type: .object(CheckPhoneNumberVerification.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(checkPhoneNumberVerification: CheckPhoneNumberVerification? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "checkPhoneNumberVerification": checkPhoneNumberVerification.flatMap { (value: CheckPhoneNumberVerification) -> ResultMap in value.resultMap }])
+    }
+
+    public var checkPhoneNumberVerification: CheckPhoneNumberVerification? {
+      get {
+        return (resultMap["checkPhoneNumberVerification"] as? ResultMap).flatMap { CheckPhoneNumberVerification(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "checkPhoneNumberVerification")
+      }
+    }
+
+    public struct CheckPhoneNumberVerification: GraphQLSelectionSet {
+      public static let possibleTypes = ["CheckPhoneNumberVerificationPayload"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("ok", type: .scalar(Bool.self)),
+        GraphQLField("message", type: .scalar(String.self)),
+        GraphQLField("phoneNumber", type: .object(PhoneNumber.selections)),
+        GraphQLField("phoneNumberToken", type: .scalar(String.self)),
+        GraphQLField("phoneNumberTokenExpires", type: .scalar(String.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(ok: Bool? = nil, message: String? = nil, phoneNumber: PhoneNumber? = nil, phoneNumberToken: String? = nil, phoneNumberTokenExpires: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CheckPhoneNumberVerificationPayload", "ok": ok, "message": message, "phoneNumber": phoneNumber.flatMap { (value: PhoneNumber) -> ResultMap in value.resultMap }, "phoneNumberToken": phoneNumberToken, "phoneNumberTokenExpires": phoneNumberTokenExpires])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var ok: Bool? {
+        get {
+          return resultMap["ok"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ok")
+        }
+      }
+
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+
+      public var phoneNumber: PhoneNumber? {
+        get {
+          return (resultMap["phoneNumber"] as? ResultMap).flatMap { PhoneNumber(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "phoneNumber")
+        }
+      }
+
+      public var phoneNumberToken: String? {
+        get {
+          return resultMap["phoneNumberToken"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "phoneNumberToken")
+        }
+      }
+
+      public var phoneNumberTokenExpires: String? {
+        get {
+          return resultMap["phoneNumberTokenExpires"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "phoneNumberTokenExpires")
+        }
+      }
+
+      public struct PhoneNumber: GraphQLSelectionSet {
+        public static let possibleTypes = ["PhoneNumber"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("hashedPhoneNumber", type: .nonNull(.scalar(String.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(hashedPhoneNumber: String) {
+          self.init(unsafeResultMap: ["__typename": "PhoneNumber", "hashedPhoneNumber": hashedPhoneNumber])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var hashedPhoneNumber: String {
+          get {
+            return resultMap["hashedPhoneNumber"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "hashedPhoneNumber")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class CheckUsernameAvailableMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation CheckUsernameAvailable($username: String!) {\n  checkUsernameAvailable(input: {username: $username}) {\n    __typename\n    ok\n    message\n  }\n}"
+
+  public var username: String
+
+  public init(username: String) {
+    self.username = username
+  }
+
+  public var variables: GraphQLMap? {
+    return ["username": username]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("checkUsernameAvailable", arguments: ["input": ["username": GraphQLVariable("username")]], type: .object(CheckUsernameAvailable.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(checkUsernameAvailable: CheckUsernameAvailable? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "checkUsernameAvailable": checkUsernameAvailable.flatMap { (value: CheckUsernameAvailable) -> ResultMap in value.resultMap }])
+    }
+
+    public var checkUsernameAvailable: CheckUsernameAvailable? {
+      get {
+        return (resultMap["checkUsernameAvailable"] as? ResultMap).flatMap { CheckUsernameAvailable(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "checkUsernameAvailable")
+      }
+    }
+
+    public struct CheckUsernameAvailable: GraphQLSelectionSet {
+      public static let possibleTypes = ["CheckUsernameAvailablePayload"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("ok", type: .scalar(Bool.self)),
+        GraphQLField("message", type: .scalar(String.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(ok: Bool? = nil, message: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CheckUsernameAvailablePayload", "ok": ok, "message": message])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var ok: Bool? {
+        get {
+          return resultMap["ok"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ok")
+        }
+      }
+
+      public var message: String? {
+        get {
+          return resultMap["message"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "message")
         }
       }
     }

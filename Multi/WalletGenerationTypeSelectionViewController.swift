@@ -8,9 +8,7 @@
 
 import UIKit
 
-class WalletGenerationTypeSelectionViewController: WalletGenerationStepViewController, WalletGenerationStep {
-    let walletGenerationStepType: WalletGeneration.Step = .setUpNewOrLinkExisting
-    weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
+class WalletGenerationTypeSelectionViewController: WalletGenerationStepViewController {
     let singleDeviceButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Create a new identity", for: .normal)
@@ -29,23 +27,24 @@ class WalletGenerationTypeSelectionViewController: WalletGenerationStepViewContr
         button.sizeToFit()
         return button
     }()
-    let logoImageView: UIImageView = {
-        let image = UIImage(named: "MultiLogo")
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColor.white
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        walletGenerationStepType = .setUpNewOrLinkExisting
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setDescriptionLabelText(text: "Welcome.")
+        self.showsLogoImageView = true
         
         view.addSubview(singleDeviceButton)
         view.addSubview(multiDeviceButton)
-        view.addSubview(logoImageView)
 
         initializeConstraints()
     }
@@ -54,29 +53,23 @@ class WalletGenerationTypeSelectionViewController: WalletGenerationStepViewContr
         let layoutGuide = self.view.safeAreaLayoutGuide
 
         singleDeviceButton.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
-        singleDeviceButton.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 257).isActive = true
+        singleDeviceButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 100).isActive = true
 
         multiDeviceButton.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
         multiDeviceButton.topAnchor.constraint(equalTo: singleDeviceButton.topAnchor, constant: 60).isActive = true
-        
-        logoImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        logoImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        logoImageView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -90).isActive = true
-        logoImageView.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
     }
     
     @objc private func selectedType(button: UIButton) {
+        var info = String()
         if button == singleDeviceButton {
-            walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: [ .type: WalletGeneration.SetupType.setUpNewAccount])
-            return
+            info = WalletGeneration.SetupType.setUpNewAccount.rawValue
         }
         
         if button == multiDeviceButton {
-            walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: [ .type: WalletGeneration.SetupType.linkExistingAccount ])
-            return
+            info = WalletGeneration.SetupType.linkExistingAccount.rawValue
         }
         
-        assertionFailure()
+        walletGenerationStepDelegate?.userInputInfo(info, forStep: self)
     }
 
 }

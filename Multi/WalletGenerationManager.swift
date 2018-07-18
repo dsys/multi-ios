@@ -6,7 +6,11 @@
 //  Copyright © 2018 Distributed Systems, Inc. All rights reserved.
 //
 
+import BitcoinKit
 import UIKit
+
+fileprivate let APINetwork: ETHEREUM_NETWORK = .ropsten
+fileprivate let BitcoinKitNetwork: Network = .testnet
 
 enum WalletGeneration {
     enum Step {
@@ -18,67 +22,56 @@ enum WalletGeneration {
         case enterPassphrase
     }
     
-    enum Info {
-        case type
-        case name
-        case phoneNumber
-        case phoneNumberVerification
-        case otherDeviceInfo
-        case passphrase
-    }
-    
-    enum SetupType {
-        case setUpNewAccount
-        case linkExistingAccount
+    enum SetupType: String {
+        case setUpNewAccount = "SetUpNewAccount"
+        case linkExistingAccount = "LinkExistingAccount"
     }
 }
 
 struct NewWalletInfo {
-    var mnemonic: [String]!
-    var type: WalletGeneration.SetupType?
-    var name: String?
-    var passphrase: String?
-    var address: String?
-    var publicKey: String?
-    var privateKey: String?
+    let publicKey: String!
+    let privateKey: String!
+    var setupType: WalletGeneration.SetupType?
+    var username: String?
+    var phoneNumber: String?
+    var phoneNumberToken: String?
+    var managerAddresses: [String]!
+    var network: ETHEREUM_NETWORK = APINetwork
+    var passphraseRecoveryHash: String?
+    var socialRecoveryAddresses: [String]?
+    var contractAddress: String?
     
-    init(mnemonic: [String]) {
-        self.mnemonic = mnemonic
+    init(publicKey: String, privateKey: String, address: String) {
+        self.publicKey = publicKey
+        self.privateKey = privateKey
+        self.managerAddresses = [ address ]
     }
 }
 
 protocol WalletGenerationStepDelegate: AnyObject {
-    func stepCompleted(step: WalletGenerationStep, success: Bool, info: [WalletGeneration.Info:Any]?)
+    func userInputInfo(_ info: String?, forStep step: WalletGenerationStepViewController)
 }
 
-protocol WalletGenerationStep: AnyObject {
-    var walletGenerationStepType: WalletGeneration.Step { get }
-    var walletGenerationStepDelegate: WalletGenerationStepDelegate? { get set }
-    var viewController: UIViewController { get }
-}
-
-extension WalletGenerationStep where Self: UIViewController {
-    var viewController: UIViewController {
-        return self
-    }
-}
+public typealias WalletVerificationStepCompletionBlock = (Bool, String?) -> Void
 
 class WalletGenerationManager: NSObject {
+    private let apiManager = APIManager.sharedManager
     private var navigationController: UINavigationController?
     private var walletCreationCompletion: ((MTWallet?) -> Void)?
-    private var newWalletInfo: NewWalletInfo?
+    private lazy var newWalletInfo: NewWalletInfo = {
+       return generateNewWalletInfo()
+    }()
     private var walletManager: WalletManager = {
         return WalletManager.sharedManager!
     }()
     
     func createWallet(presentingViewController: UIViewController, completion: ((MTWallet?) -> Void)?) {
         walletCreationCompletion = completion
-        newWalletInfo = NewWalletInfo(mnemonic: walletManager.newMnemonic())
         
         let firstStep = WalletGenerationTypeSelectionViewController()
         firstStep.walletGenerationStepDelegate = self
 
-        navigationController = UINavigationController(rootViewController: firstStep.viewController)
+        navigationController = UINavigationController(rootViewController: firstStep)
         let navigationBar = navigationController?.navigationBar
         navigationBar?.isTranslucent = true
         navigationBar?.setBackgroundImage(UIImage(), for: .default)
@@ -87,14 +80,18 @@ class WalletGenerationManager: NSObject {
         presentingViewController.present(navigationController!, animated: true, completion: nil)
     }
     
-    private func didSelectSetupNewOrLinkExisting(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        guard let setupType = info?[.type] as! WalletGeneration.SetupType? else {
-            assertionFailure()
-            return
-        }
-
-        var nextStep: WalletGenerationStep
-        newWalletInfo?.type = setupType
+    private func generateNewWalletInfo() -> NewWalletInfo {
+        let mnemonic = try! Mnemonic.generate()
+        let seed = Mnemonic.seed(mnemonic: mnemonic)
+        let hdWallet = HDWallet(seed: seed, network: BitcoinKitNetwork)
+        
+        let walletInfo = NewWalletInfo(publicKey: hdWallet.publicKey.extended(), privateKey: hdWallet.privateKey.extended(), address: hdWallet.address)
+        return walletInfo
+    }
+    
+    private func didSelectSetupNewOrLinkExisting(setupType: WalletGeneration.SetupType, viewController: WalletGenerationStepViewController) {
+        newWalletInfo.setupType = setupType
+        var nextStep: WalletGenerationStepViewController
         switch setupType {
         case .setUpNewAccount:
             nextStep = WalletGenerationUsernameViewController()
@@ -105,119 +102,197 @@ class WalletGenerationManager: NSObject {
         }
 
         nextStep.walletGenerationStepDelegate = self
-        navigationController?.pushViewController(nextStep.viewController, animated: true)
+        navigationController?.pushViewController(nextStep, animated: true)
     }
     
-    private func didEnterName(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        guard let name = info?[.name] as! String? else {
-            assertionFailure()
-            return
-        }
-        
-        newWalletInfo?.name = name
-        let nextStep = WalletGenerationPhoneNumberViewController()
-        nextStep.walletGenerationStepDelegate = self
-        navigationController?.pushViewController(nextStep.viewController, animated: true)
-    }
-    
-    private func didEnterPhoneNumber(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        guard let phoneNumber = info?[.phoneNumber] as! String? else {
-            assertionFailure()
-            return
-        }
-        
-        verifyPhoneNumber(phoneNumber: phoneNumber)
-        let nextStep = WalletGenerationPhoneVerificationViewController()
-        nextStep.walletGenerationStepDelegate = self
-        navigationController?.pushViewController(nextStep.viewController, animated: true)
-    }
-    
-    private func didEnterPhoneNumberVerification(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        guard let phoneNumberVerification = info?[.phoneNumberVerification] as! String? else {
-            assertionFailure()
-            return
-        }
-        
-        verifyPhoneNumberVerification(phoneNumberVerification: phoneNumberVerification)
-        let nextStep = WalletGenerationLinkDeviceViewController(setupType: newWalletInfo!.type!)
-        nextStep.walletGenerationStepDelegate = self
-        navigationController?.pushViewController(nextStep.viewController, animated: true)
-    }
-    
-    private func didAttemptToLinkOtherDevice(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        if !success {
-            let nextStep = WalletGenerationInfoViewController(walletGenerationStepType: .enterPassphrase, walletGenerationInfo: .passphrase, labelString: "Enter a passphrase:")
-            nextStep.walletGenerationStepDelegate = self
-            navigationController?.pushViewController(nextStep.viewController, animated: true)
-            return
-        }
-        
-        if newWalletInfo?.type == .linkExistingAccount {
-            assert(newWalletInfo?.name == nil)
-            guard let name = info?[.name] as! String? else {
-                assertionFailure()
+    private func didEnterUsername(username: String, viewController: WalletGenerationStepViewController) {
+        viewController.isLoading = true
+        let domain = username + ".multiapp.eth"
+        checkUsername(username: domain) { (success, message) in
+            viewController.isLoading = false
+            if !success {
+                viewController.additionalInfoLabelText = message
                 return
             }
             
-            newWalletInfo?.name = name
+            let nextStep = WalletGenerationPhoneNumberViewController()
+            nextStep.walletGenerationStepDelegate = self
+            self.navigationController?.pushViewController(nextStep, animated: true)
         }
-        
-        generateAndSaveWallet(newWallet: newWalletInfo!)
-        navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    private func didEnterPassphrase(success: Bool, info: [WalletGeneration.Info:Any]?) {
-        guard let passphrase = info?[.passphrase] as! String? else {
-            assertionFailure()
+    private func didEnterPhoneNumber(phoneNumber: String, viewController: WalletGenerationStepViewController) {
+        viewController.isLoading = true
+        startPhoneNumberVerification(phoneNumber: phoneNumber) { (success, message) in
+            viewController.isLoading = false
+            if !success {
+                viewController.additionalInfoLabelText = message
+                return
+            }
+            
+            let nextStep = WalletGenerationPhoneVerificationViewController()
+            nextStep.walletGenerationStepDelegate = self
+            self.navigationController?.pushViewController(nextStep, animated: true)
+        }
+    }
+    
+    private func didEnterPhoneNumberVerification(verificationCode: String, viewController: WalletGenerationStepViewController) {
+        viewController.isLoading = true
+        checkPhoneNumberVerification(verificationCode: verificationCode) { (success, message) in
+            viewController.isLoading = false
+            if !success {
+                viewController.additionalInfoLabelText = message
+                return
+            }
+            
+            let nextStep = WalletGenerationLinkDeviceViewController(setupType: self.newWalletInfo.setupType!)
+            nextStep.walletGenerationStepDelegate = self
+            self.navigationController?.pushViewController(nextStep, animated: true)
+        }
+    }
+    
+    private func didAttemptToLinkOtherDevice(info: String?, viewController: WalletGenerationStepViewController) {
+        viewController.isLoading = true
+        let presentPassphraseBlock = {
+            let nextStep = WalletGenerationPassphraseViewController()
+            nextStep.walletGenerationStepDelegate = self
+            self.navigationController?.pushViewController(nextStep, animated: true)
+        }
+        
+        guard let otherDeviceInfo = info else {
+            presentPassphraseBlock()
             return
         }
         
-        newWalletInfo?.passphrase = passphrase
-        generateAndSaveWallet(newWallet: newWalletInfo!)
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-    
-    private func generateAndSaveWallet(newWallet: NewWalletInfo) {
-        guard let wallet = walletManager.generateWallet(name: newWallet.name!, mnemonic: newWallet.mnemonic) else { return }
-        
-        walletManager.saveWallet(wallet: wallet)
-        if let completion = walletCreationCompletion {
-            completion(wallet)
+        checkOtherDeviceInfo(otherDeviceInfo: otherDeviceInfo) { (success, message) in
+            viewController.isLoading = false
+            if !success {
+                let alertController = UIAlertController(title: "Error linking other device", message: "There was an error linking your other device. Would you like to enter a passphrase instead?", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: "Enter Passphrase", style: .default, handler: { _ in
+                    presentPassphraseBlock()
+                }))
+                return
+            }
+            
+            let nextStep = WalletGenerationCreatingIdentityViewController(setupType: self.newWalletInfo.setupType!)
+            self.navigationController?.pushViewController(nextStep, animated: true)
+            self.createIdentityContract(completion: { (success, message) in
+                if success {
+                    self.navigationController?.dismiss(animated: true, completion: nil)
+                }
+            })
         }
+    }
+    
+    private func didEnterPassphrase(passphrase: String, viewController: WalletGenerationStepViewController) {
+        viewController.isLoading = true
+        newWalletInfo.passphraseRecoveryHash = passphrase.passphraseHash()
+        generateAndSaveWallet(newWallet: newWalletInfo)
+    }
+        
+    private func generateAndSaveWallet(newWallet: NewWalletInfo) {
+        assert(newWallet.username != nil)
+        assert(newWallet.phoneNumberToken != nil)
+        assert(newWallet.managerAddresses.count >= 2 || newWallet.passphraseRecoveryHash != nil)
+        navigationController?.pushViewController(WalletGenerationCreatingIdentityViewController(), animated: true)
+        createIdentityContract(completion: { (success, message) in
+            if success {
+                let wallet = WalletManager.sharedManager?.saveWallet(username: self.newWalletInfo.username!,
+                                                                     publicKey: self.newWalletInfo.publicKey,
+                                                                     privateKey: self.newWalletInfo.privateKey,
+                                                                     contractAddress: self.newWalletInfo.contractAddress!,
+                                                                     network: self.newWalletInfo.network)
+                if let completion = self.walletCreationCompletion {
+                    completion(wallet)
+                }
 
-        navigationController!.dismiss(animated: true, completion: nil)
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
+        })
     }
     
-    private func verifyPhoneNumber(phoneNumber: String) {
-        // Need to implement
+    private func checkUsername(username: String, completion: @escaping WalletVerificationStepCompletionBlock) {
+        apiManager.checkUsernameAvailable(username: username) { (success, message) in
+            DispatchQueue.main.async {
+                if success {
+                    self.newWalletInfo.username = username
+                }
+                
+                completion(success, message)
+            }
+        }
     }
     
-    private func verifyPhoneNumberVerification(phoneNumberVerification: String) {
-        // Need to implement
+    private func startPhoneNumberVerification(phoneNumber: String, completion: @escaping WalletVerificationStepCompletionBlock) {
+        apiManager.startPhoneNumberVerification(phoneNumber: phoneNumber) { (success, message) in
+            DispatchQueue.main.async {
+                if success {
+                    self.newWalletInfo.phoneNumber = phoneNumber
+                }
+                
+                completion(success, message)
+            }
+        }
+    }
+    
+    private func checkPhoneNumberVerification(verificationCode: String, completion: @escaping WalletVerificationStepCompletionBlock) {
+        guard let phoneNumber = newWalletInfo.phoneNumber else {
+            completion(false, "No phone number entered")
+            return
+        }
+    
+        apiManager.checkPhoneNumberVerification(phoneNumber: phoneNumber, verificationCode: verificationCode) { (success, message, hashedPhoneNumber, phoneNumberToken, phoneNumberTokenExpires) in
+            DispatchQueue.main.async {
+                if success {
+                    self.newWalletInfo.phoneNumberToken = phoneNumberToken
+                }
+                
+                completion(success, message)
+            }
+        }
+    }
+    
+    private func checkOtherDeviceInfo(otherDeviceInfo: String, completion: @escaping WalletVerificationStepCompletionBlock) {
+        apiManager.checkOtherDeviceInfo(otherDeviceInfo: otherDeviceInfo) { (success, message, managerAddresses) in
+            DispatchQueue.main.async {
+                if success {
+                    self.newWalletInfo.managerAddresses += managerAddresses
+                }
+                
+                completion(success, message)
+            }
+        }
+    }
+    
+    private func createIdentityContract(completion: @escaping WalletVerificationStepCompletionBlock) {
+        apiManager.createIdentityContract(username: newWalletInfo.username!, phoneNumberToken: newWalletInfo.phoneNumberToken!, managerAddresses: newWalletInfo.managerAddresses, network: newWalletInfo.network, passphraseRecoveryHash: newWalletInfo.passphraseRecoveryHash, socialRecoveryAddresses: newWalletInfo.socialRecoveryAddresses) { (contractAddress) in
+            DispatchQueue.main.async {
+                self.newWalletInfo.contractAddress = contractAddress
+                completion(contractAddress != nil, contractAddress)
+            }
+        }
     }
 }
 
 extension WalletGenerationManager: WalletGenerationStepDelegate {
-    func stepCompleted(step: WalletGenerationStep, success: Bool, info: [WalletGeneration.Info:Any]?) {
+    func userInputInfo(_ info: String?, forStep step: WalletGenerationStepViewController) {
         switch step.walletGenerationStepType {
-        case .setUpNewOrLinkExisting:
-            didSelectSetupNewOrLinkExisting(success: success, info: info)
-            break
-        case .enterName:
-            didEnterName(success: success, info: info)
-            break
-        case .enterPhoneNumber:
-            didEnterPhoneNumber(success: success, info: info)
-            break
-        case .enterPhoneNumberVerification:
-            didEnterPhoneNumberVerification(success: success, info: info)
-            break
-        case .linkOtherDevice:
-            didAttemptToLinkOtherDevice(success: success, info: info)
-            break
-        case .enterPassphrase:
-            didEnterPassphrase(success: success, info: info)
-            break
+        case .setUpNewOrLinkExisting?:
+            guard let setupType = WalletGeneration.SetupType(rawValue: info!) else { return }
+            didSelectSetupNewOrLinkExisting(setupType: setupType, viewController: step)
+        case .enterName?:
+            didEnterUsername(username: info!, viewController: step)
+        case .enterPhoneNumber?:
+            didEnterPhoneNumber(phoneNumber: info!, viewController: step)
+        case .enterPhoneNumberVerification?:
+            didEnterPhoneNumberVerification(verificationCode: info!, viewController: step)
+        case .linkOtherDevice?:
+            didAttemptToLinkOtherDevice(info: info, viewController: step)
+        case .enterPassphrase?:
+            didEnterPassphrase(passphrase: info!, viewController: step)
+        default:
+            assertionFailure()
         }
     }
 }

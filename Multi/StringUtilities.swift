@@ -14,4 +14,9 @@ extension String {
             return character >= "0" && character <= "9"
         }
     }
+    
+    func passphraseHash() -> String {
+        // Need to implement
+        return self
+    }
 }

@@ -8,56 +8,36 @@
 
 import UIKit
 
-class WalletGenerationPhoneNumberViewController: WalletGenerationStepViewController, WalletGenerationStep {
-    weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
-    let walletGenerationStepType: WalletGeneration.Step = .enterPhoneNumber
+class WalletGenerationPhoneNumberViewController: WalletGenerationStepViewController {
     private let phoneNumberTextField: UITextField = {
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 44))
         let textField = UITextField()
         textField.leftView = paddingView
         textField.leftViewMode = .always
-        textField.rightViewMode = .always
         textField.backgroundColor = UIColor.white
         textField.placeholder = "Phone Number"
         textField.keyboardType = .numberPad
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    private let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        let size = activityIndicatorView.frame.size
-        activityIndicatorView.frame = CGRect(x: 0, y: 0, width: size.width + 20, height: size.height)
-        return activityIndicatorView
-    }()
-    private lazy var phoneNumberErrorLabel: UILabel? = {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    private let nextButton: UIButton = {
-        let nextButton = UIButton(type: .system)
-        nextButton.setTitle("Next", for: .normal)
-        nextButton.tintColor = UIColor.white
-        nextButton.addTarget(self, action: #selector(next(button:)), for: .primaryActionTriggered)
-        nextButton.sizeToFit()
-        nextButton.translatesAutoresizingMaskIntoConstraints = false
-        return nextButton
-    }()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        walletGenerationStepType = .enterPhoneNumber
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setDescriptionLabelText(text: "Phone")
-        
+        self.showsLogoImageView = true
         phoneNumberTextField.delegate = self
-        phoneNumberTextField.rightView = activityIndicatorView
-        
-        view.addSubview(phoneNumberErrorLabel!)
-        view.addSubview(phoneNumberTextField)
-        view.addSubview(nextButton)
-        
-        initializeConstraints()
+        self.informationInputView = phoneNumberTextField
+        updateNextButtonEnabled()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -66,41 +46,16 @@ class WalletGenerationPhoneNumberViewController: WalletGenerationStepViewControl
         phoneNumberTextField.becomeFirstResponder()
     }
     
-    @objc public func next(button: UIButton?) {
+    @objc override public func next(button: UIButton?) {
         guard let phoneNumber = phoneNumberTextField.phoneNumber() else { return }
         
+        self.isLoading = true
         phoneNumberTextField.resignFirstResponder()
-        activityIndicatorView.startAnimating()
-        nextButton.isEnabled = false
-        APIManager.sharedManager.startPhoneNumberVerification(phoneNumber: phoneNumber) { (success, message) in
-            DispatchQueue.main.async {
-                self.activityIndicatorView.stopAnimating()
-                if success {
-                    self.walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: [ .phoneNumber : phoneNumber ])
-                }
-                self.updateNextButtonEnabled()
-            }
-        }
+        walletGenerationStepDelegate?.userInputInfo(phoneNumber, forStep: self)
     }
     
     fileprivate func updateNextButtonEnabled() {
-        nextButton.isEnabled = phoneNumberTextField.phoneNumber()!.count >= 10
-    }
-    
-    private func initializeConstraints() {
-        let layoutGuide = self.view.safeAreaLayoutGuide
-        
-        phoneNumberTextField.widthAnchor.constraint(equalTo: layoutGuide.widthAnchor).isActive = true
-        phoneNumberTextField.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        phoneNumberTextField.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
-        phoneNumberTextField.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 250).isActive = true
-        
-        phoneNumberErrorLabel?.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
-        phoneNumberErrorLabel?.bottomAnchor.constraint(equalTo: phoneNumberTextField.topAnchor, constant: -10).isActive = true
-        phoneNumberErrorLabel?.widthAnchor.constraint(equalTo: layoutGuide.widthAnchor, constant: -40).isActive = true
-        
-        nextButton.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
-        nextButton.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor, constant: 40).isActive = true
+        isNextButtonEnabled = phoneNumberTextField.phoneNumber()!.count >= 10
     }
 
     func formattedPhoneNumber(_ phoneNumber: String) -> String {
@@ -122,7 +77,7 @@ class WalletGenerationPhoneNumberViewController: WalletGenerationStepViewControl
 
 extension WalletGenerationPhoneNumberViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if nextButton.isEnabled {
+        if isNextButtonEnabled {
             next(button: nil)
             return true
         }
@@ -139,7 +94,7 @@ extension WalletGenerationPhoneNumberViewController: UITextFieldDelegate {
     }
 }
 
-extension UITextField {
+fileprivate extension UITextField {
     func phoneNumber() -> String? {
         return self.text?.numbersOnly()
     }

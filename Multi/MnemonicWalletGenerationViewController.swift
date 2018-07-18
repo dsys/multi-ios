@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MnemonicWalletGenerationViewController: UIViewController, WalletGenerationStep {
+class MnemonicWalletGenerationViewController: UIViewController {
     
     let walletGenerationStepType: WalletGeneration.Step = .enterPassphrase
     weak var walletGenerationStepDelegate: WalletGenerationStepDelegate?
@@ -68,6 +68,5 @@ class MnemonicWalletGenerationViewController: UIViewController, WalletGeneration
     }
     
     @objc private func submit(sender: UIButton) { 
-        walletGenerationStepDelegate?.stepCompleted(step: self, success: true, info: nil)
     }
 }

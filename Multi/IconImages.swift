@@ -22,6 +22,14 @@ extension UIImage {
         return templateImageNamed(name: "TransactionNewContractIcon")
     }
     
+    public static var multiLogoImage: UIImage? {
+        return UIImage(named: "MultiLogo")
+    }
+    
+    public static var cameraIconImage: UIImage? {
+        return UIImage(named: "CameraIcon")
+    }
+    
     private static func templateImageNamed(name: String) -> UIImage? {
         var image = UIImage(named: name)
         image = image?.withRenderingMode(.alwaysTemplate)
