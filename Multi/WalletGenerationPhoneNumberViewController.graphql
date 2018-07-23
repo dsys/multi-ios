@@ -1,8 +1,0 @@
-mutation StartPhoneNumberVerification($phoneNumber: String!) {
-    startPhoneNumberVerification(input: {
-        phoneNumber: $phoneNumber
-    }) {
-        ok
-        message
-    }
-}

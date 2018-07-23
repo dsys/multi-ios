@@ -67,6 +67,7 @@ class WalletGenerationStepViewController: UIViewController {
     private lazy var additionalInfoLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

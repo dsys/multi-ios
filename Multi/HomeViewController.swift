@@ -14,13 +14,18 @@ class HomeViewController: UIViewController {
         return WalletGenerationManager()
     }()
     private var dAppCollectionViewController: DAppCollectionViewController?
-    private var shouldShowWalletCreationView: Bool = true
+    private var shouldShowWalletCreationView: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dAppCollectionViewController = DAppCollectionViewController()
         let navigationController = UINavigationController(rootViewController: dAppCollectionViewController!)
+        let navigationBar = navigationController.navigationBar
+        navigationBar.barTintColor = UIColor.multiBlue
+        navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor: UIColor.white ]
+        navigationBar.tintColor = UIColor.white
+        
         self.view.addSubview(navigationController.view)
         self.addChildViewController(navigationController)
     }
@@ -53,5 +58,9 @@ class HomeViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }

@@ -175,27 +175,21 @@ class WalletGenerationManager: NSObject {
                 return
             }
             
-            let nextStep = WalletGenerationCreatingIdentityViewController(setupType: self.newWalletInfo.setupType!)
-            self.navigationController?.pushViewController(nextStep, animated: true)
-            self.createIdentityContract(completion: { (success, message) in
-                if success {
-                    self.navigationController?.dismiss(animated: true, completion: nil)
-                }
-            })
+            self.generateAndSaveWallet()
         }
     }
     
     private func didEnterPassphrase(passphrase: String, viewController: WalletGenerationStepViewController) {
         viewController.isLoading = true
         newWalletInfo.passphraseRecoveryHash = passphrase.passphraseHash()
-        generateAndSaveWallet(newWallet: newWalletInfo)
+        generateAndSaveWallet()
     }
         
-    private func generateAndSaveWallet(newWallet: NewWalletInfo) {
-        assert(newWallet.username != nil)
-        assert(newWallet.phoneNumberToken != nil)
-        assert(newWallet.managerAddresses.count >= 2 || newWallet.passphraseRecoveryHash != nil)
-        navigationController?.pushViewController(WalletGenerationCreatingIdentityViewController(), animated: true)
+    private func generateAndSaveWallet() {
+        assert(newWalletInfo.username != nil)
+        assert(newWalletInfo.phoneNumberToken != nil)
+        assert(newWalletInfo.managerAddresses.count >= 2 || newWalletInfo.passphraseRecoveryHash != nil)
+        navigationController?.pushViewController(WalletGenerationCreatingIdentityViewController(setupType: newWalletInfo.setupType!), animated: true)
         createIdentityContract(completion: { (success, message) in
             if success {
                 let wallet = WalletManager.sharedManager?.saveWallet(username: self.newWalletInfo.username!,
@@ -206,9 +200,9 @@ class WalletGenerationManager: NSObject {
                 if let completion = self.walletCreationCompletion {
                     completion(wallet)
                 }
-
-                self.navigationController?.dismiss(animated: true, completion: nil)
             }
+
+            self.navigationController?.dismiss(animated: true, completion: nil)
         })
     }
     

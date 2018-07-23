@@ -1,3 +1,37 @@
+mutation CheckUsernameAvailable($username: String!) {
+  checkUsernameAvailable(input: { username: $username }) {
+    ok
+    message
+  }
+}
+
+mutation StartPhoneNumberVerification($phoneNumber: String!) {
+    startPhoneNumberVerification(input: {
+        phoneNumber: $phoneNumber
+    }) {
+        ok
+        message
+    }
+}
+
+mutation CheckPhoneNumberVerification(
+  $phoneNumber: String!
+  $verificationCode: String!
+) {
+  checkPhoneNumberVerification(input: {
+    phoneNumber: $phoneNumber
+    verificationCode: $verificationCode
+  }) {
+    ok
+    message
+    phoneNumber {
+      hashedPhoneNumber
+    }
+    phoneNumberToken
+    phoneNumberTokenExpires
+  }
+}
+
 mutation CreateIdentityContract(
   $username: String!
   $phoneNumberToken: String!

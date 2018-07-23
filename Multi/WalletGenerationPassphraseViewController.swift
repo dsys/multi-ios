@@ -25,7 +25,7 @@ class WalletGenerationPassphraseViewController: WalletGenerationStepViewControll
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        walletGenerationStepType = .enterPhoneNumberVerification
+        walletGenerationStepType = .enterPassphrase
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,7 +64,8 @@ class WalletGenerationPassphraseViewController: WalletGenerationStepViewControll
                 self.walletGenerationStepDelegate?.userInputInfo(passphrase, forStep: self)
             } else {
                 self.additionalInfoLabelText = "Passphrase does not match"
-                passphraseTextField.text = ""
+                passphraseTextField.text = nil
+                self.passphrase = nil
             }
         } else {
             self.additionalInfoLabelText = "Confirm your passphrase"

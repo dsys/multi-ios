@@ -61,7 +61,7 @@ class WalletGenerationPhoneVerificationViewController: WalletGenerationStepViewC
         view.addSubview(didNotReceiveACodeButton)
         view.addSubview(masterTextField)
         updateNextButtonEnabled()
-        initializeDidNotReceiveCodeButtonConstraints()
+        initializeDidNotReceiveCodeButtonConstraints()        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -111,7 +111,7 @@ class WalletGenerationPhoneVerificationViewController: WalletGenerationStepViewC
         isNextButtonEnabled = masterTextField.text?.numbersOnly().count == 6
     }
     
-    @objc public func didNotReceiveACode(button: UIButton?) {
+    @objc private func didNotReceiveACode(button: UIButton?) {
         self.navigationController?.popViewController(animated: true)
     }
 }

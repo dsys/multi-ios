@@ -8,19 +8,41 @@
 
 import UIKit
 
+enum TransactionDetailInformationIndex: Int {
+    case header = 0
+    case from = 1
+    case to = 2
+    case description = 3
+    case lineItems = 4
+    case approve = 5
+}
+
+extension UITableViewCell {
+    fileprivate func addSeparatorWithInset(_ inset: CGFloat) {
+        let separatorView = UIView()
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.backgroundColor = UIColor.lightGray
+        contentView.addSubview(separatorView)
+        
+        separatorView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: inset).isActive = true
+        separatorView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        separatorView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        separatorView.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale).isActive = true
+    }
+}
+
 protocol TransactionDetailViewControllerDelegate: AnyObject {
     func willDismiss(transactionDetailViewController: TransactionDetailViewController)
 }
 
-class TransactionDetailViewController: UIViewController {
-    
+class TransactionDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    private let headerCellReuseIdentifier = "HeaderCellReuseIdentifier"
+    private let informationCellReuseIdentifier = "InformationCellReuseIdentifier"
+    private let lineItemCellReuseIdentifier = "LineItemCellReuseIdentifier"
+    private let approveCellReuseIdentifier = "ApproveCellReuseIdentifier"
+    private let verticalPadding = 15
     public static let viewCornerRadius: CGFloat = 10;
-    public static let viewSize: CGSize = {
-        let screenSize = UIScreen.main.bounds.size
-        let size = CGSize(width: screenSize.width * 0.9, height: screenSize.height * 0.8)
-        return size
-    }()
-    
+    public let displayInformation: TransactionDetailDisplayInformation
     weak public var delegate: TransactionDetailViewControllerDelegate?
     private let dimmingView: UIView = {
         let frame = UIScreen.main.bounds
@@ -29,11 +51,30 @@ class TransactionDetailViewController: UIViewController {
         view.alpha = 0
         return view
     }()
-    private var navigationBar: UINavigationBar?
+    private let blurView: UIVisualEffectView = {
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        return blurView
+    }()
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    private var tableViewHeightAnchor: NSLayoutConstraint?
+    private var doneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Done", for: .normal)
+        button.addTarget(self, action: #selector(doneButtonTapped(button:)), for: .primaryActionTriggered)
+        button.sizeToFit()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
+    init(displayInformation: TransactionDetailDisplayInformation) {
+        self.displayInformation = displayInformation
+        super.init(nibName: nil, bundle: nil)
+
         self.modalPresentationStyle = .custom
     }
     
@@ -44,41 +85,66 @@ class TransactionDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let view = self.view else { return }
+        view.backgroundColor = UIColor.clear
 
-        let layer = view.layer
+        tableView.backgroundColor = UIColor.clear
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 75
+        tableView.isScrollEnabled = false
+        tableView.alwaysBounceVertical = false
+        tableView.allowsSelection = false
+        tableView.register(TransactionDetailHeaderTableViewCell.self, forCellReuseIdentifier: headerCellReuseIdentifier)
+        tableView.register(TransactionDetailInformationTableViewCell.self, forCellReuseIdentifier: informationCellReuseIdentifier)
+        tableView.register(TransactionLineItemTableViewCell.self, forCellReuseIdentifier: lineItemCellReuseIdentifier)
+        tableView.register(TransactionApproveTableViewCell.self, forCellReuseIdentifier: approveCellReuseIdentifier)
+        
+        view.addSubview(blurView)
+        blurView.contentView.addSubview(tableView)
+        
+        let layer = blurView.layer
         layer.cornerRadius = TransactionDetailViewController.viewCornerRadius
         layer.masksToBounds = true
-        view.backgroundColor = UIColor.white
-    
-        let navigationItem = UINavigationItem(title: "Transaction")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped(barButtonItem:)))
         
-        navigationBar = UINavigationBar()
-        navigationBar?.setItems([ navigationItem ], animated: false)
-        view.addSubview(navigationBar!)
+        initializeConstraints()
     }
     
-    @objc func doneButtonTapped(barButtonItem: UIBarButtonItem) {
+    private func initializeConstraints() {
+        let layoutGuide = view.safeAreaLayoutGuide
+        
+        blurView.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
+        blurView.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor).isActive = true
+        blurView.widthAnchor.constraint(equalTo: layoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        blurView.heightAnchor.constraint(equalTo: tableView.heightAnchor).isActive = true
+        
+        tableView.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor).isActive = true
+        tableView.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor).isActive = true
+        tableView.widthAnchor.constraint(equalTo: blurView.widthAnchor).isActive = true
+        tableViewHeightAnchor = tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height)
+        tableViewHeightAnchor?.isActive = true
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tableViewHeightAnchor?.constant = tableView.contentSize.height
+    }
+    
+    @objc func doneButtonTapped(button: UIButton) {
         self.dismiss(animated: true, completion: nil)
         self.delegate?.willDismiss(transactionDetailViewController: self)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    @objc func approveButtonTapped(button: UIButton) {
         
-        let screenSize = UIScreen.main.bounds.size
-        let size = TransactionDetailViewController.viewSize
-        self.view.frame = CGRect(origin: CGPoint(x: (screenSize.width - size.width) / 2, y: (screenSize.height - size.height) / 2), size: size)
-        
-        navigationBar?.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: size.width, height: 50))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         guard let transitionCoordinator = self.transitionCoordinator else { return }
-        
         transitionCoordinator.animate(alongsideTransition: { (context) in
             guard let fromView = context.viewController(forKey: .from)?.view else {
                 assertionFailure()
@@ -94,7 +160,6 @@ class TransactionDetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         guard let transitionCoordinator = self.transitionCoordinator else { return }
-        
         self.transitionCoordinator?.animate(alongsideTransition: { (context) in
             UIView.animate(withDuration: transitionCoordinator.transitionDuration, delay: 0, options: .curveEaseInOut, animations: {
                 self.dimmingView.alpha = 0
@@ -102,5 +167,65 @@ class TransactionDetailViewController: UIViewController {
         }, completion: { _ in
             self.dimmingView.removeFromSuperview()
         })
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return displayInformation.requiresApproval ? 6 : 5
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == TransactionDetailInformationIndex.lineItems.rawValue {
+            let height = CGFloat(((displayInformation.lineItems.count - 1) * 20) + 25 + 30)
+            return height
+        }
+        
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let index = TransactionDetailInformationIndex(rawValue: indexPath.row) else {
+            assertionFailure()
+            return UITableViewCell()
+        }
+        
+        switch index {
+        case .header:
+            let cell = tableView.dequeueReusableCell(withIdentifier: headerCellReuseIdentifier) as! TransactionDetailHeaderTableViewCell
+            cell.doneButton.setTitle(displayInformation.requiresApproval ? "Cancel" : "Done", for: .normal)
+            cell.doneButton.addTarget(self, action: #selector(doneButtonTapped(button:)), for: .primaryActionTriggered)
+            cell.addSeparatorWithInset(0)
+            return cell
+        case .to:
+            let cell = tableView.dequeueReusableCell(withIdentifier: informationCellReuseIdentifier) as! TransactionDetailInformationTableViewCell
+            cell.titleLabel.text = "WALLET"
+            cell.label1.text = displayInformation.walletName
+            cell.label2.text = displayInformation.walletBalanance
+            cell.addSeparatorWithInset(15)
+            return cell
+        case .from:
+            let cell = tableView.dequeueReusableCell(withIdentifier: informationCellReuseIdentifier) as! TransactionDetailInformationTableViewCell
+            cell.titleLabel.text = "TO"
+            cell.label1.text = displayInformation.recipientName
+            cell.label2.text = displayInformation.recipientDetail
+            cell.addSeparatorWithInset(15)
+            return cell
+        case .description:
+            let cell = tableView.dequeueReusableCell(withIdentifier: informationCellReuseIdentifier) as! TransactionDetailInformationTableViewCell
+            cell.titleLabel.text = displayInformation.messageTitle
+            cell.label1.text = displayInformation.messageText
+            cell.addSeparatorWithInset(15)
+            return cell
+        case .lineItems:
+            let cell = tableView.dequeueReusableCell(withIdentifier: lineItemCellReuseIdentifier) as! TransactionLineItemTableViewCell
+            cell.lineItems = displayInformation.lineItems
+            if displayInformation.requiresApproval {
+                cell.addSeparatorWithInset(0)
+            }
+            return cell
+        case .approve:
+            let cell = tableView.dequeueReusableCell(withIdentifier: approveCellReuseIdentifier) as! TransactionApproveTableViewCell
+            cell.approveButton.addTarget(self, action: #selector(approveButtonTapped(button:)), for: .primaryActionTriggered)
+            return cell
+        }
     }
 }

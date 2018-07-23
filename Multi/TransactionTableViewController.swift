@@ -74,7 +74,18 @@ class TransactionTableViewController: UITableViewController {
     // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewControler = TransactionDetailViewController()
+        let displayInformation = TransactionDetailDisplayInformation(walletName: "WalletName",
+                                                                     walletBalanance: "42 ETH",
+                                                                     recipientName: "RecipientName",
+                                                                     recipientDetail: "This is the recipient detail",
+                                                                     recipientIcon: nil,
+                                                                     messageTitle: "DESCRIPTION",
+                                                                     messageText: "Donec maximus risus mauris, ac blandit est mollis pellentesque. Nam mattis molestie est eget accumsan. Integer aliquam, nibh id iaculis ultricies, ipsum nisi venenatis nibh, ut suscipit. ",
+                                                                     lineItems: [("sub total", "12 ETH"),
+                                                                                 ("gas", ".1 ETH"),
+                                                                                 ("pay total", "12.1 ETH (~$4)")],
+                                                                     requiresApproval: true)
+        let viewControler = TransactionDetailViewController(displayInformation: displayInformation)
         viewControler.delegate = self
         self.present(viewControler, animated: true, completion: nil)
     }

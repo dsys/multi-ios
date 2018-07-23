@@ -27,7 +27,7 @@ class WalletManager: NSObject {
     public var debugWallet: MTWallet {
         let wallet = MTWallet(context: managedObjectContext)
         wallet.name = "DEBUG"
-        wallet.address = "0x75810d3d157371C1FB7c474a90bc84672024Dbad"
+        wallet.address = "0x1394B50D8Fca528E51aa75178C64d72d2b6Adf81"
         wallet.network = ETHEREUM_NETWORK.mainnet.rawValue
         wallet.publicKey = "pub123456789"
         wallet.privateKey = "prv123456789"

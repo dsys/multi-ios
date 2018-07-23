@@ -25,7 +25,7 @@ class DAppCollectionViewController: UICollectionViewController {
         super.init(collectionViewLayout: collectionViewLayout)
         
         self.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        self.title = "Apps"
+        self.title = "Home"
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateDAppIcon(notification:)), name: .didUpdateDAppIcon, object: nil)
     }
@@ -43,7 +43,6 @@ class DAppCollectionViewController: UICollectionViewController {
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
         collectionView?.backgroundColor = UIColor.white
         collectionView!.register(DAppCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
     }
     
     @objc private func didUpdateDAppIcon(notification: Notification) {

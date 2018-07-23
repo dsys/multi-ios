@@ -513,35 +513,25 @@ public final class TransactionFeedQuery: GraphQLQuery {
   }
 }
 
-public final class CreateIdentityContractMutation: GraphQLMutation {
+public final class CheckUsernameAvailableMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation CreateIdentityContract($username: String!, $phoneNumberToken: String!, $managerAddresses: [EthereumAddressString!]!, $network: ETHEREUM_NETWORK, $passphraseRecoveryHash: String, $socialRecoveryAddresses: [EthereumAddressString!]) {\n  createIdentityContract(input: {username: $username, phoneNumberToken: $phoneNumberToken, managerAddresses: $managerAddresses, network: $network, passphraseRecoveryHash: $passphraseRecoveryHash, socialRecoveryAddresses: $socialRecoveryAddresses}) {\n    __typename\n    ok\n    message\n    identityContract {\n      __typename\n      address {\n        __typename\n        display\n      }\n    }\n  }\n}"
+    "mutation CheckUsernameAvailable($username: String!) {\n  checkUsernameAvailable(input: {username: $username}) {\n    __typename\n    ok\n    message\n  }\n}"
 
   public var username: String
-  public var phoneNumberToken: String
-  public var managerAddresses: [String]
-  public var network: ETHEREUM_NETWORK?
-  public var passphraseRecoveryHash: String?
-  public var socialRecoveryAddresses: [String]?
 
-  public init(username: String, phoneNumberToken: String, managerAddresses: [String], network: ETHEREUM_NETWORK? = nil, passphraseRecoveryHash: String? = nil, socialRecoveryAddresses: [String]?) {
+  public init(username: String) {
     self.username = username
-    self.phoneNumberToken = phoneNumberToken
-    self.managerAddresses = managerAddresses
-    self.network = network
-    self.passphraseRecoveryHash = passphraseRecoveryHash
-    self.socialRecoveryAddresses = socialRecoveryAddresses
   }
 
   public var variables: GraphQLMap? {
-    return ["username": username, "phoneNumberToken": phoneNumberToken, "managerAddresses": managerAddresses, "network": network, "passphraseRecoveryHash": passphraseRecoveryHash, "socialRecoveryAddresses": socialRecoveryAddresses]
+    return ["username": username]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("createIdentityContract", arguments: ["input": ["username": GraphQLVariable("username"), "phoneNumberToken": GraphQLVariable("phoneNumberToken"), "managerAddresses": GraphQLVariable("managerAddresses"), "network": GraphQLVariable("network"), "passphraseRecoveryHash": GraphQLVariable("passphraseRecoveryHash"), "socialRecoveryAddresses": GraphQLVariable("socialRecoveryAddresses")]], type: .object(CreateIdentityContract.selections)),
+      GraphQLField("checkUsernameAvailable", arguments: ["input": ["username": GraphQLVariable("username")]], type: .object(CheckUsernameAvailable.selections)),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -550,27 +540,26 @@ public final class CreateIdentityContractMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(createIdentityContract: CreateIdentityContract? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "createIdentityContract": createIdentityContract.flatMap { (value: CreateIdentityContract) -> ResultMap in value.resultMap }])
+    public init(checkUsernameAvailable: CheckUsernameAvailable? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "checkUsernameAvailable": checkUsernameAvailable.flatMap { (value: CheckUsernameAvailable) -> ResultMap in value.resultMap }])
     }
 
-    public var createIdentityContract: CreateIdentityContract? {
+    public var checkUsernameAvailable: CheckUsernameAvailable? {
       get {
-        return (resultMap["createIdentityContract"] as? ResultMap).flatMap { CreateIdentityContract(unsafeResultMap: $0) }
+        return (resultMap["checkUsernameAvailable"] as? ResultMap).flatMap { CheckUsernameAvailable(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "createIdentityContract")
+        resultMap.updateValue(newValue?.resultMap, forKey: "checkUsernameAvailable")
       }
     }
 
-    public struct CreateIdentityContract: GraphQLSelectionSet {
-      public static let possibleTypes = ["CreateIdentityContractPayload"]
+    public struct CheckUsernameAvailable: GraphQLSelectionSet {
+      public static let possibleTypes = ["CheckUsernameAvailablePayload"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("ok", type: .scalar(Bool.self)),
         GraphQLField("message", type: .scalar(String.self)),
-        GraphQLField("identityContract", type: .object(IdentityContract.selections)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -579,8 +568,8 @@ public final class CreateIdentityContractMutation: GraphQLMutation {
         self.resultMap = unsafeResultMap
       }
 
-      public init(ok: Bool? = nil, message: String? = nil, identityContract: IdentityContract? = nil) {
-        self.init(unsafeResultMap: ["__typename": "CreateIdentityContractPayload", "ok": ok, "message": message, "identityContract": identityContract.flatMap { (value: IdentityContract) -> ResultMap in value.resultMap }])
+      public init(ok: Bool? = nil, message: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CheckUsernameAvailablePayload", "ok": ok, "message": message])
       }
 
       public var __typename: String {
@@ -607,89 +596,6 @@ public final class CreateIdentityContractMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "message")
-        }
-      }
-
-      public var identityContract: IdentityContract? {
-        get {
-          return (resultMap["identityContract"] as? ResultMap).flatMap { IdentityContract(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "identityContract")
-        }
-      }
-
-      public struct IdentityContract: GraphQLSelectionSet {
-        public static let possibleTypes = ["EthereumIdentityContract"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("address", type: .nonNull(.object(Address.selections))),
-        ]
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(address: Address) {
-          self.init(unsafeResultMap: ["__typename": "EthereumIdentityContract", "address": address.resultMap])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var address: Address {
-          get {
-            return Address(unsafeResultMap: resultMap["address"]! as! ResultMap)
-          }
-          set {
-            resultMap.updateValue(newValue.resultMap, forKey: "address")
-          }
-        }
-
-        public struct Address: GraphQLSelectionSet {
-          public static let possibleTypes = ["EthereumAddress"]
-
-          public static let selections: [GraphQLSelection] = [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("display", type: .nonNull(.scalar(String.self))),
-          ]
-
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public init(display: String) {
-            self.init(unsafeResultMap: ["__typename": "EthereumAddress", "display": display])
-          }
-
-          public var __typename: String {
-            get {
-              return resultMap["__typename"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          public var display: String {
-            get {
-              return resultMap["display"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "display")
-            }
-          }
         }
       }
     }
@@ -943,25 +849,35 @@ public final class CheckPhoneNumberVerificationMutation: GraphQLMutation {
   }
 }
 
-public final class CheckUsernameAvailableMutation: GraphQLMutation {
+public final class CreateIdentityContractMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation CheckUsernameAvailable($username: String!) {\n  checkUsernameAvailable(input: {username: $username}) {\n    __typename\n    ok\n    message\n  }\n}"
+    "mutation CreateIdentityContract($username: String!, $phoneNumberToken: String!, $managerAddresses: [EthereumAddressString!]!, $network: ETHEREUM_NETWORK, $passphraseRecoveryHash: String, $socialRecoveryAddresses: [EthereumAddressString!]) {\n  createIdentityContract(input: {username: $username, phoneNumberToken: $phoneNumberToken, managerAddresses: $managerAddresses, network: $network, passphraseRecoveryHash: $passphraseRecoveryHash, socialRecoveryAddresses: $socialRecoveryAddresses}) {\n    __typename\n    ok\n    message\n    identityContract {\n      __typename\n      address {\n        __typename\n        display\n      }\n    }\n  }\n}"
 
   public var username: String
+  public var phoneNumberToken: String
+  public var managerAddresses: [String]
+  public var network: ETHEREUM_NETWORK?
+  public var passphraseRecoveryHash: String?
+  public var socialRecoveryAddresses: [String]?
 
-  public init(username: String) {
+  public init(username: String, phoneNumberToken: String, managerAddresses: [String], network: ETHEREUM_NETWORK? = nil, passphraseRecoveryHash: String? = nil, socialRecoveryAddresses: [String]?) {
     self.username = username
+    self.phoneNumberToken = phoneNumberToken
+    self.managerAddresses = managerAddresses
+    self.network = network
+    self.passphraseRecoveryHash = passphraseRecoveryHash
+    self.socialRecoveryAddresses = socialRecoveryAddresses
   }
 
   public var variables: GraphQLMap? {
-    return ["username": username]
+    return ["username": username, "phoneNumberToken": phoneNumberToken, "managerAddresses": managerAddresses, "network": network, "passphraseRecoveryHash": passphraseRecoveryHash, "socialRecoveryAddresses": socialRecoveryAddresses]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("checkUsernameAvailable", arguments: ["input": ["username": GraphQLVariable("username")]], type: .object(CheckUsernameAvailable.selections)),
+      GraphQLField("createIdentityContract", arguments: ["input": ["username": GraphQLVariable("username"), "phoneNumberToken": GraphQLVariable("phoneNumberToken"), "managerAddresses": GraphQLVariable("managerAddresses"), "network": GraphQLVariable("network"), "passphraseRecoveryHash": GraphQLVariable("passphraseRecoveryHash"), "socialRecoveryAddresses": GraphQLVariable("socialRecoveryAddresses")]], type: .object(CreateIdentityContract.selections)),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -970,26 +886,27 @@ public final class CheckUsernameAvailableMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(checkUsernameAvailable: CheckUsernameAvailable? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "checkUsernameAvailable": checkUsernameAvailable.flatMap { (value: CheckUsernameAvailable) -> ResultMap in value.resultMap }])
+    public init(createIdentityContract: CreateIdentityContract? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "createIdentityContract": createIdentityContract.flatMap { (value: CreateIdentityContract) -> ResultMap in value.resultMap }])
     }
 
-    public var checkUsernameAvailable: CheckUsernameAvailable? {
+    public var createIdentityContract: CreateIdentityContract? {
       get {
-        return (resultMap["checkUsernameAvailable"] as? ResultMap).flatMap { CheckUsernameAvailable(unsafeResultMap: $0) }
+        return (resultMap["createIdentityContract"] as? ResultMap).flatMap { CreateIdentityContract(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "checkUsernameAvailable")
+        resultMap.updateValue(newValue?.resultMap, forKey: "createIdentityContract")
       }
     }
 
-    public struct CheckUsernameAvailable: GraphQLSelectionSet {
-      public static let possibleTypes = ["CheckUsernameAvailablePayload"]
+    public struct CreateIdentityContract: GraphQLSelectionSet {
+      public static let possibleTypes = ["CreateIdentityContractPayload"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("ok", type: .scalar(Bool.self)),
         GraphQLField("message", type: .scalar(String.self)),
+        GraphQLField("identityContract", type: .object(IdentityContract.selections)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -998,8 +915,8 @@ public final class CheckUsernameAvailableMutation: GraphQLMutation {
         self.resultMap = unsafeResultMap
       }
 
-      public init(ok: Bool? = nil, message: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "CheckUsernameAvailablePayload", "ok": ok, "message": message])
+      public init(ok: Bool? = nil, message: String? = nil, identityContract: IdentityContract? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CreateIdentityContractPayload", "ok": ok, "message": message, "identityContract": identityContract.flatMap { (value: IdentityContract) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -1026,6 +943,89 @@ public final class CheckUsernameAvailableMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "message")
+        }
+      }
+
+      public var identityContract: IdentityContract? {
+        get {
+          return (resultMap["identityContract"] as? ResultMap).flatMap { IdentityContract(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "identityContract")
+        }
+      }
+
+      public struct IdentityContract: GraphQLSelectionSet {
+        public static let possibleTypes = ["EthereumIdentityContract"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("address", type: .nonNull(.object(Address.selections))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(address: Address) {
+          self.init(unsafeResultMap: ["__typename": "EthereumIdentityContract", "address": address.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var address: Address {
+          get {
+            return Address(unsafeResultMap: resultMap["address"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "address")
+          }
+        }
+
+        public struct Address: GraphQLSelectionSet {
+          public static let possibleTypes = ["EthereumAddress"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("display", type: .nonNull(.scalar(String.self))),
+          ]
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(display: String) {
+            self.init(unsafeResultMap: ["__typename": "EthereumAddress", "display": display])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var display: String {
+            get {
+              return resultMap["display"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "display")
+            }
+          }
         }
       }
     }
